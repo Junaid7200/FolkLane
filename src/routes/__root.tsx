@@ -4,6 +4,7 @@ import { TanStackDevtools } from '@tanstack/react-devtools'
 
 import NavBar from '../components/NavBar'
 import Footer from '../components/Footer'
+import { CartProvider } from '../context/CartContext'
 
 import appCss from '../styles.css?url'
 
@@ -44,11 +45,13 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body className="min-h-screen flex flex-col">
-        <NavBar />
-        <main className="flex-1">
-          {children}
-        </main>
-        <Footer />
+        <CartProvider>
+          <NavBar />
+          <main className="flex-1">
+            {children}
+          </main>
+          <Footer />
+        </CartProvider>
         <TanStackDevtools
           config={{
             position: 'bottom-right',
