@@ -43,12 +43,12 @@ const itemsByBrand: Record<string, any[]> = {
     { id: 'sobia-4', title: 'Stylish Kurta Set', price: 11000, image: '/placeholder.jpg' },
     { id: 'sobia-5', title: 'Modern Ethnic Wear', price: 13500, image: '/placeholder.jpg' },
   ],
-  jindhia: [
-    { id: 'jindhia-1', title: 'Casual Everyday Dress', price: 6500, image: '/placeholder.jpg' },
-    { id: 'jindhia-2', title: 'Modern Kurta Collection', price: 7800, image: '/placeholder.jpg' },
-    { id: 'jindhia-3', title: 'Trendy Summer Wear', price: 5900, image: '/placeholder.jpg' },
-    { id: 'jindhia-4', title: 'Comfortable Daily Outfit', price: 6200, image: '/placeholder.jpg' },
-    { id: 'jindhia-5', title: 'Stylish Casual Set', price: 7200, image: '/placeholder.jpg' },
+  jindjan: [
+    { id: 'jindjan-1', title: 'Casual Everyday Dress', price: 6500, image: '/placeholder.jpg' },
+    { id: 'jindjan-2', title: 'Modern Kurta Collection', price: 7800, image: '/placeholder.jpg' },
+    { id: 'jindjan-3', title: 'Trendy Summer Wear', price: 5900, image: '/placeholder.jpg' },
+    { id: 'jindjan-4', title: 'Comfortable Daily Outfit', price: 6200, image: '/placeholder.jpg' },
+    { id: 'jindjan-5', title: 'Stylish Casual Set', price: 7200, image: '/placeholder.jpg' },
   ],
   ameena: [
     { id: 'ameena-1', title: 'Cotton Summer Lawn', price: 2500, image: '/placeholder.jpg' },
@@ -79,7 +79,7 @@ const brandNames: Record<string, string> = {
   'maria-nasir': 'Maria Nasir',
   'd-m-collection': 'D&M Collection',
   'sobia-nazir': 'Sobia Nazir',
-  jindhia: 'Jindhia',
+  jindjan: 'Jindjan',
   ameena: 'Ameena',
   'uigc-collection': 'UIGC Collection',
   mirakk: 'Mirakk',
