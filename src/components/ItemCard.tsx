@@ -12,7 +12,9 @@ type ItemCardProps = {
 }
 
 export default function ItemCard({ id, title, price, image, brand, category }: ItemCardProps) {
-  const [imageError, setImageError] = useState(false)
+  // Check if image is placeholder path - if so, show placeholder immediately without trying to load
+  const isPlaceholderPath = image === '/placeholder.jpg' || !image
+  const [imageError, setImageError] = useState(isPlaceholderPath)
 
   return (
     <Link
