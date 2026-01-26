@@ -10,7 +10,8 @@ type ItemDetailProps = {
 }
 
 export default function ItemDetail({ title, price, description, image, brand }: ItemDetailProps) {
-  const [imageError, setImageError] = useState(false)
+  const isPlaceholderPath = image === '/placeholder.jpg' || !image
+  const [imageError, setImageError] = useState(isPlaceholderPath)
 
   return (
     <div className="container mx-auto px-4 sm:px-6 py-12 md:py-16">
