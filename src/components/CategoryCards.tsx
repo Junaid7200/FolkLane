@@ -27,7 +27,8 @@ export default function CategoryCards() {
       {categories.map((category) => (
         <Link
           key={category.id}
-          to={`/category/${category.id}`}
+          to="/category/$category"
+          params = {{ category: category.id }}
           className="group"
         >
           <div className={`bg-gradient-to-br ${category.color} rounded-2xl p-8 text-white shadow-lg hover:shadow-2xl transition-all transform hover:-translate-y-2 h-64 flex flex-col justify-center items-center text-center`}>
