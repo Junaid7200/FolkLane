@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import ImagePlaceholder from './ImagePlaceholder'
+import { useCart } from '../context/CartContext'
 
 type ItemDetailProps = {
+  id: string
   title: string
   price: number
   description: string
@@ -9,9 +11,20 @@ type ItemDetailProps = {
   brand: string
 }
 
-export default function ItemDetail({ title, price, description, image, brand }: ItemDetailProps) {
+export default function ItemDetail({ id, title, price, description, image, brand }: ItemDetailProps) {
+  const { addItem } = useCart()
   const isPlaceholderPath = image === '/placeholder.jpg' || !image
   const [imageError, setImageError] = useState(isPlaceholderPath)
+  const [added, setAdded] = useState(false)
+
+  const canAdd = price > 0 && id.length > 0
+
+  const handleAddToCart = () => {
+    if (!canAdd) return
+    addItem({ id, title, price, image, brand })
+    setAdded(true)
+    window.setTimeout(() => setAdded(false), 1200)
+  }
 
   return (
     <div className="container mx-auto px-4 sm:px-6 py-12 md:py-16">
@@ -44,8 +57,12 @@ export default function ItemDetail({ title, price, description, image, brand }: 
           <p className="text-base sm:text-lg text-gray-700 leading-relaxed mb-8">
             {description}
           </p>
-          <button className="cursor-pointer bg-amber-600 text-white px-8 sm:px-10 py-3 sm:py-4 rounded-full text-base sm:text-lg font-semibold hover:bg-amber-700 transition-all shadow-lg hover:shadow-xl w-full sm:w-fit text-center">
-            This button doesn't do anything yet
+          <button
+            onClick={handleAddToCart}
+            disabled={!canAdd}
+            className="cursor-pointer bg-amber-600 disabled:bg-amber-600/60 text-white px-8 sm:px-10 py-3 sm:py-4 rounded-full text-base sm:text-lg font-semibold hover:bg-amber-700 transition-all shadow-lg hover:shadow-xl w-full sm:w-fit text-center disabled:cursor-not-allowed"
+          >
+            {added ? 'Added to cart' : 'Add to cart'}
           </button>
         </div>
       </div>
