@@ -6,7 +6,10 @@ export default function NavBar() {
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo/Brand */}
-          <Link to="/" className="text-3xl font-bold tracking-wide hover:text-amber-400 transition-colors">
+          <Link
+            to="/"
+            className="text-3xl font-bold tracking-wide hover:text-amber-400 transition-colors"
+          >
             FolkLane
           </Link>
 
@@ -20,19 +23,22 @@ export default function NavBar() {
               Home
             </Link>
             <Link
-              to="/category/luxury"
+              to="/category/$category"
+              params={{ category: 'luxury' }}
               className="text-lg font-medium hover:text-amber-400 transition-colors"
             >
               Luxury
             </Link>
             <Link
-              to="/category/casual"
+              to="/category/$category"
+              params={{ category: 'casual' }}
               className="text-lg font-medium hover:text-amber-400 transition-colors"
             >
               Casual
             </Link>
             <Link
-              to="/category/cheap"
+              to="/category/$category"
+              params={{ category: 'cheap' }}
               className="text-lg font-medium hover:text-amber-400 transition-colors"
             >
               Affordable
