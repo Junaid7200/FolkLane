@@ -19,7 +19,8 @@ export default function BrandCard({ id, name, category, description }: BrandCard
 
   return (
     <Link
-      to={`/category/${category}/brand/${id}`}
+      to="/category/$category/brand/$brand"
+      params= {{ category: category, brand: id }}
       className="group block"
     >
       <div className="bg-white rounded-xl shadow-md hover:shadow-2xl transition-all overflow-hidden transform hover:-translate-y-2 h-full">
