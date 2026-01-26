@@ -6,9 +6,9 @@ export const Route = createFileRoute('/about')({
 
 function AboutPage() {
   return (
-    <div className="container mx-auto px-6 py-16">
+    <div className="container mx-auto px-4 sm:px-6 py-12 md:py-16">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-5xl font-bold text-gray-900 mb-8">About FolkLane</h1>
+        <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6 sm:mb-8">About FolkLane</h1>
         
         <div className="prose prose-lg max-w-none">
           <p className="text-xl text-gray-700 mb-6">
