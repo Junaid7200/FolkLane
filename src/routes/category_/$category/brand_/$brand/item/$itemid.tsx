@@ -44,12 +44,12 @@ const allItems: Record<string, any> = {
   'sobia-4': { title: 'Stylish Kurta Set', price: 11000, description: 'Contemporary kurta set with modern embellishments and comfortable fit. Versatile for various occasions.', brand: 'Sobia Nazir' },
   'sobia-5': { title: 'Modern Ethnic Wear', price: 13500, description: 'Fusion of modern style and ethnic design. Perfect for cultural events and festive occasions.', brand: 'Sobia Nazir' },
 
-  // Jindhia (Casual)
-  'jindhia-1': { title: 'Casual Everyday Dress', price: 6500, description: 'Comfortable and stylish dress for daily wear. Easy to maintain with modern casual design.', brand: 'Jindhia' },
-  'jindhia-2': { title: 'Modern Kurta Collection', price: 7800, description: 'Trendy kurta collection with contemporary design and comfortable fabric. Perfect for daily wear.', brand: 'Jindhia' },
-  'jindhia-3': { title: 'Trendy Summer Wear', price: 5900, description: 'Light and comfortable summer outfit with modern prints. Stay cool and stylish in warm weather.', brand: 'Jindhia' },
-  'jindhia-4': { title: 'Comfortable Daily Outfit', price: 6200, description: 'Versatile daily outfit with comfortable fit and easy maintenance. Perfect for everyday activities.', brand: 'Jindhia' },
-  'jindhia-5': { title: 'Stylish Casual Set', price: 7200, description: 'Modern casual set with trendy design and comfortable fabric. Ideal for casual outings and daily wear.', brand: 'Jindhia' },
+  // Jindjan (Casual)
+  'jindjan-1': { title: 'Casual Everyday Dress', price: 6500, description: 'Comfortable and stylish dress for daily wear. Easy to maintain with modern casual design.', brand: 'Jindjan' },
+  'jindjan-2': { title: 'Modern Kurta Collection', price: 7800, description: 'Trendy kurta collection with contemporary design and comfortable fabric. Perfect for daily wear.', brand: 'Jindjan' },
+  'jindjan-3': { title: 'Trendy Summer Wear', price: 5900, description: 'Light and comfortable summer outfit with modern prints. Stay cool and stylish in warm weather.', brand: 'Jindjan' },
+  'jindjan-4': { title: 'Comfortable Daily Outfit', price: 6200, description: 'Versatile daily outfit with comfortable fit and easy maintenance. Perfect for everyday activities.', brand: 'Jindjan' },
+  'jindjan-5': { title: 'Stylish Casual Set', price: 7200, description: 'Modern casual set with trendy design and comfortable fabric. Ideal for casual outings and daily wear.', brand: 'Jindjan' },
 
   // Ameena (Affordable)
   'ameena-1': { title: 'Cotton Summer Lawn', price: 2500, description: 'Affordable cotton lawn perfect for hot summer days. Breathable fabric with attractive prints.', brand: 'Ameena' },
