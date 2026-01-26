@@ -1,6 +1,9 @@
 import { Link } from '@tanstack/react-router'
+import { useCart } from '../context/CartContext'
 
 export default function NavBar() {
+  const { totalItems } = useCart()
+
   return (
     <nav className="bg-gray-900 text-white shadow-lg">
       <div className="container mx-auto px-4 sm:px-6 py-4">
@@ -49,6 +52,18 @@ export default function NavBar() {
               activeProps={{ className: 'text-amber-400' }}
             >
               About
+            </Link>
+            <Link
+              to="/cart"
+              className="font-medium hover:text-amber-400 transition-colors relative"
+              activeProps={{ className: 'text-amber-400' }}
+            >
+              Cart
+              {totalItems > 0 && (
+                <span className="ml-2 inline-flex items-center justify-center min-w-[1.25rem] h-5 px-1 rounded-full bg-amber-500 text-xs font-bold text-gray-900">
+                  {totalItems}
+                </span>
+              )}
             </Link>
           </div>
         </div>
