@@ -35,17 +35,23 @@ export default function Footer() {
             <h4 className="text-xl font-semibold mb-4">Categories</h4>
             <ul className="space-y-2">
               <li>
-                <Link to="/category/luxury" className="text-gray-300 hover:text-amber-400 transition-colors">
+                <Link to="/category/$category" 
+                params={{ category: 'luxury' }}
+                className="text-gray-300 hover:text-amber-400 transition-colors">
                   Luxury
                 </Link>
               </li>
               <li>
-                <Link to="/category/casual" className="text-gray-300 hover:text-amber-400 transition-colors">
+                <Link to="/category/$category" 
+                params={{ category: 'casual' }}
+                className="text-gray-300 hover:text-amber-400 transition-colors">
                   Casual
                 </Link>
               </li>
               <li>
-                <Link to="/category/cheap" className="text-gray-300 hover:text-amber-400 transition-colors">
+                <Link to="/category/$category" 
+                params={{ category: 'cheap' }}
+                className="text-gray-300 hover:text-amber-400 transition-colors">
                   Affordable
                 </Link>
               </li>
