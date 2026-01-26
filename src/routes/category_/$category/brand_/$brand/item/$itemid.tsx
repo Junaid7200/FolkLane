@@ -32,6 +32,7 @@ function ItemPage() {
 
   return (
     <ItemDetail
+      id={displayItem.id ?? ''}
       title={displayItem.title}
       price={displayItem.price}
       description={displayItem.description}
