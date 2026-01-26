@@ -43,8 +43,8 @@ export default function ItemDetail({ title, price, description, image, brand }: 
           <p className="text-lg text-gray-700 leading-relaxed mb-8">
             {description}
           </p>
-          <button className="bg-amber-600 text-white px-10 py-4 rounded-full text-lg font-semibold hover:bg-amber-700 transition-all shadow-lg hover:shadow-xl w-fit">
-            Add to Cart
+          <button className="cursor-pointer bg-amber-600 text-white px-10 py-4 rounded-full text-lg font-semibold hover:bg-amber-700 transition-all shadow-lg hover:shadow-xl w-fit">
+            This button doesn't do anything yet
           </button>
         </div>
       </div>
