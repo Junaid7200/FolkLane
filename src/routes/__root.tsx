@@ -1,8 +1,9 @@
-import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
+import { HeadContent, Scripts, createRootRoute, Outlet } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 
-import Header from '../components/Header'
+import NavBar from '../components/NavBar'
+import Footer from '../components/Footer'
 
 import appCss from '../styles.css?url'
 
@@ -17,7 +18,7 @@ export const Route = createRootRoute({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'TanStack Start Starter',
+        title: 'FolkLane - Pakistani Fashion Brands',
       },
     ],
     links: [
@@ -37,9 +38,12 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body>
-        <Header />
-        {children}
+      <body className="min-h-screen flex flex-col">
+        <NavBar />
+        <main className="flex-1">
+          {children}
+        </main>
+        <Footer />
         <TanStackDevtools
           config={{
             position: 'bottom-right',
