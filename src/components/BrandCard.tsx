@@ -25,13 +25,13 @@ export default function BrandCard({ id, name, category, description }: BrandCard
     >
       <div className="bg-white rounded-xl shadow-md hover:shadow-2xl transition-all overflow-hidden transform hover:-translate-y-2 h-full">
         {/* Brand Logo/Icon Area */}
-        <div className={`h-48 bg-gradient-to-br ${gradient} flex items-center justify-center`}>
-          <h3 className="text-4xl font-bold text-white">{name}</h3>
+        <div className={`h-32 sm:h-40 md:h-48 bg-gradient-to-br ${gradient} flex items-center justify-center`}>
+          <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white px-4 text-center">{name}</h3>
         </div>
 
         {/* Content */}
-        <div className="p-6">
-          <h3 className="text-2xl font-bold text-gray-900 mb-2 group-hover:text-amber-600 transition-colors">
+        <div className="p-5 sm:p-6">
+          <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 group-hover:text-amber-600 transition-colors">
             {name}
           </h3>
           {description && (
