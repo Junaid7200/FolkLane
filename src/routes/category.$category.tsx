@@ -16,7 +16,7 @@ const brandsByCategory: Record<string, any[]> = {
   casual: [
     { id: 'd-m-collection', name: 'D&M Collection', description: 'Contemporary casual wear' },
     { id: 'sobia-nazir', name: 'Sobia Nazir', description: 'Elegant everyday fashion' },
-    { id: 'jindhia', name: 'Jindhia', description: 'Modern casual style' },
+    { id: 'jindjan', name: 'Jindjan', description: 'Modern casual style' },
   ],
   cheap: [
     { id: 'ameena', name: 'Ameena', description: 'Quality fashion on budget' },
