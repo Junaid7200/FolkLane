@@ -9,9 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as TestRouteImport } from './routes/test'
 import { Route as AboutRouteImport } from './routes/about'
-import { Route as ProductidRouteImport } from './routes/$productid'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CategoryCategoryRouteImport } from './routes/category/$category'
 import { Route as DemoStartServerFuncsRouteImport } from './routes/demo/start.server-funcs'
@@ -24,19 +22,9 @@ import { Route as DemoStartSsrDataOnlyRouteImport } from './routes/demo/start.ss
 import { Route as CategoryCategoryBrandBrandRouteImport } from './routes/category/$category/brand/$brand'
 import { Route as CategoryCategoryBrandBrandItemItemIdRouteImport } from './routes/category/$category/brand/$brand/item/$itemId'
 
-const TestRoute = TestRouteImport.update({
-  id: '/test',
-  path: '/test',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProductidRoute = ProductidRouteImport.update({
-  id: '/$productid',
-  path: '/$productid',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -99,9 +87,7 @@ const CategoryCategoryBrandBrandItemItemIdRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/$productid': typeof ProductidRoute
   '/about': typeof AboutRoute
-  '/test': typeof TestRoute
   '/category/$category': typeof CategoryCategoryRouteWithChildren
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
@@ -115,9 +101,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/$productid': typeof ProductidRoute
   '/about': typeof AboutRoute
-  '/test': typeof TestRoute
   '/category/$category': typeof CategoryCategoryRouteWithChildren
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
@@ -132,9 +116,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/$productid': typeof ProductidRoute
   '/about': typeof AboutRoute
-  '/test': typeof TestRoute
   '/category/$category': typeof CategoryCategoryRouteWithChildren
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
@@ -150,9 +132,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/$productid'
     | '/about'
-    | '/test'
     | '/category/$category'
     | '/demo/api/names'
     | '/demo/start/api-request'
@@ -166,9 +146,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/$productid'
     | '/about'
-    | '/test'
     | '/category/$category'
     | '/demo/api/names'
     | '/demo/start/api-request'
@@ -182,9 +160,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/$productid'
     | '/about'
-    | '/test'
     | '/category/$category'
     | '/demo/api/names'
     | '/demo/start/api-request'
@@ -199,9 +175,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ProductidRoute: typeof ProductidRoute
   AboutRoute: typeof AboutRoute
-  TestRoute: typeof TestRoute
   CategoryCategoryRoute: typeof CategoryCategoryRouteWithChildren
   DemoApiNamesRoute: typeof DemoApiNamesRoute
   DemoStartApiRequestRoute: typeof DemoStartApiRequestRoute
@@ -214,25 +188,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/test': {
-      id: '/test'
-      path: '/test'
-      fullPath: '/test'
-      preLoaderRoute: typeof TestRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/about': {
       id: '/about'
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/$productid': {
-      id: '/$productid'
-      path: '/$productid'
-      fullPath: '/$productid'
-      preLoaderRoute: typeof ProductidRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -343,9 +303,7 @@ const CategoryCategoryRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ProductidRoute: ProductidRoute,
   AboutRoute: AboutRoute,
-  TestRoute: TestRoute,
   CategoryCategoryRoute: CategoryCategoryRouteWithChildren,
   DemoApiNamesRoute: DemoApiNamesRoute,
   DemoStartApiRequestRoute: DemoStartApiRequestRoute,
