@@ -1,40 +1,31 @@
 import { createFileRoute } from '@tanstack/react-router'
 import SectionHeading from '../components/SectionHeading'
 import BrandCard from '../components/BrandCard'
+import { getBrandsByCategory, isCategory } from '../data/catalog'
 
 export const Route = createFileRoute('/category/$category')({
   component: CategoryPage,
+  loader: async ({ params }) => {
+    if (!isCategory(params.category)) {
+      return { brands: [], title: 'Brands', category: params.category }
+    }
+    const brands = await getBrandsByCategory(params.category)
+    const titleByCategory: Record<string, string> = {
+      luxury: 'Luxury Brands',
+      casual: 'Casual Brands',
+      cheap: 'Affordable Brands',
+    }
+    return {
+      brands,
+      title: titleByCategory[params.category] || 'Brands',
+      category: params.category,
+    }
+  },
 })
 
-// Placeholder brands data
-const brandsByCategory: Record<string, any[]> = {
-  luxury: [
-    { id: 'mtf', name: 'MTF', description: 'Timeless elegance and sophistication' },
-    { id: 'cosset', name: 'Cosset', description: 'Premium designer collections' },
-    { id: 'maria-nasir', name: 'Maria Nasir', description: 'Luxury fashion and jewelry' },
-  ],
-  casual: [
-    { id: 'd-m-collection', name: 'D&M Collection', description: 'Contemporary casual wear' },
-    { id: 'sobia-nazir', name: 'Sobia Nazir', description: 'Elegant everyday fashion' },
-    { id: 'jindjan', name: 'Jindjan', description: 'Modern casual style' },
-  ],
-  cheap: [
-    { id: 'ameena', name: 'Ameena', description: 'Quality fashion on budget' },
-    { id: 'uigc-collection', name: 'UIGC Collection', description: 'Affordable everyday wear' },
-    { id: 'mirakk', name: 'Mirakk', description: 'Value-priced fashion' },
-  ],
-}
-
-const categoryTitles: Record<string, string> = {
-  luxury: 'Luxury Brands',
-  casual: 'Casual Brands',
-  cheap: 'Affordable Brands',
-}
-
 function CategoryPage() {
-  const { category } = Route.useParams()
-  const brands = brandsByCategory[category] || []
-  const title = categoryTitles[category] || 'Brands'
+  const data = Route.useLoaderData()
+  const { category, title, brands } = data
 
   return (
     <div className="container mx-auto px-4 sm:px-6 py-12 md:py-16">
