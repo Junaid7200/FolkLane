@@ -38,11 +38,11 @@ export default function ItemCard({ id, title, price, image, brand, category }: I
         </div>
 
         {/* Content */}
-        <div className="p-5">
-          <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-amber-600 transition-colors">
+        <div className="p-4 sm:p-5">
+          <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-amber-600 transition-colors">
             {title}
           </h3>
-          <p className="text-2xl font-bold text-amber-600">
+          <p className="text-xl sm:text-2xl font-bold text-amber-600">
             Rs. {price.toLocaleString()}
           </p>
         </div>
