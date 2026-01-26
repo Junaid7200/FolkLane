@@ -91,12 +91,12 @@ function BrandPage() {
   const brandName = brandNames[brand] || brand
 
   return (
-    <div className="container mx-auto px-6 py-16">
+    <div className="container mx-auto px-4 sm:px-6 py-12 md:py-16">
       <SectionHeading
         title={brandName}
         subtitle={`Explore the complete ${brandName} collection`}
       />
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mt-8 md:mt-12">
         {items.map((item) => (
           <ItemCard key={item.id} {...item} brand={brand} category={category} />
         ))}
