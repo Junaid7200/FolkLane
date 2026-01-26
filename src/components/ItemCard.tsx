@@ -16,7 +16,8 @@ export default function ItemCard({ id, title, price, image, brand, category }: I
 
   return (
     <Link
-      to={`/category/${category}/brand/${brand}/item/${id}`}
+      to="/category/$category/brand/$brand/item/$itemid"
+      params= {{ category: category, brand: brand, itemid: id }}
       className="group block"
     >
       <div className="bg-white rounded-xl shadow-md hover:shadow-2xl transition-all overflow-hidden transform hover:-translate-y-1">
