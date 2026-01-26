@@ -11,7 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as CategoryCategoryRouteImport } from './routes/category/$category'
+import { Route as CategoryCategoryRouteImport } from './routes/category.$category'
 import { Route as DemoStartServerFuncsRouteImport } from './routes/demo/start.server-funcs'
 import { Route as DemoStartApiRequestRouteImport } from './routes/demo/start.api-request'
 import { Route as DemoApiNamesRouteImport } from './routes/demo/api.names'
@@ -19,8 +19,8 @@ import { Route as DemoStartSsrIndexRouteImport } from './routes/demo/start.ssr.i
 import { Route as DemoStartSsrSpaModeRouteImport } from './routes/demo/start.ssr.spa-mode'
 import { Route as DemoStartSsrFullSsrRouteImport } from './routes/demo/start.ssr.full-ssr'
 import { Route as DemoStartSsrDataOnlyRouteImport } from './routes/demo/start.ssr.data-only'
-import { Route as CategoryCategoryBrandBrandRouteImport } from './routes/category/$category/brand/$brand'
-import { Route as CategoryCategoryBrandBrandItemItemIdRouteImport } from './routes/category/$category/brand/$brand/item/$itemId'
+import { Route as CategoryCategoryBrandBrandRouteImport } from './routes/category_.$category.brand.$brand'
+import { Route as CategoryCategoryBrandBrandItemItemidRouteImport } from './routes/category_/$category/brand_/$brand/item/$itemid'
 
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
@@ -74,59 +74,59 @@ const DemoStartSsrDataOnlyRoute = DemoStartSsrDataOnlyRouteImport.update({
 } as any)
 const CategoryCategoryBrandBrandRoute =
   CategoryCategoryBrandBrandRouteImport.update({
-    id: '/brand/$brand',
-    path: '/brand/$brand',
-    getParentRoute: () => CategoryCategoryRoute,
+    id: '/category_/$category/brand/$brand',
+    path: '/category/$category/brand/$brand',
+    getParentRoute: () => rootRouteImport,
   } as any)
-const CategoryCategoryBrandBrandItemItemIdRoute =
-  CategoryCategoryBrandBrandItemItemIdRouteImport.update({
-    id: '/item/$itemId',
-    path: '/item/$itemId',
-    getParentRoute: () => CategoryCategoryBrandBrandRoute,
+const CategoryCategoryBrandBrandItemItemidRoute =
+  CategoryCategoryBrandBrandItemItemidRouteImport.update({
+    id: '/category_/$category/brand_/$brand/item/$itemid',
+    path: '/category/$category/brand/$brand/item/$itemid',
+    getParentRoute: () => rootRouteImport,
   } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/category/$category': typeof CategoryCategoryRouteWithChildren
+  '/category/$category': typeof CategoryCategoryRoute
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
   '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
-  '/category/$category/brand/$brand': typeof CategoryCategoryBrandBrandRouteWithChildren
+  '/category/$category/brand/$brand': typeof CategoryCategoryBrandBrandRoute
   '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
   '/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
   '/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
   '/demo/start/ssr/': typeof DemoStartSsrIndexRoute
-  '/category/$category/brand/$brand/item/$itemId': typeof CategoryCategoryBrandBrandItemItemIdRoute
+  '/category/$category/brand/$brand/item/$itemid': typeof CategoryCategoryBrandBrandItemItemidRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/category/$category': typeof CategoryCategoryRouteWithChildren
+  '/category/$category': typeof CategoryCategoryRoute
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
   '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
-  '/category/$category/brand/$brand': typeof CategoryCategoryBrandBrandRouteWithChildren
+  '/category/$category/brand/$brand': typeof CategoryCategoryBrandBrandRoute
   '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
   '/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
   '/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
   '/demo/start/ssr': typeof DemoStartSsrIndexRoute
-  '/category/$category/brand/$brand/item/$itemId': typeof CategoryCategoryBrandBrandItemItemIdRoute
+  '/category/$category/brand/$brand/item/$itemid': typeof CategoryCategoryBrandBrandItemItemidRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/category/$category': typeof CategoryCategoryRouteWithChildren
+  '/category/$category': typeof CategoryCategoryRoute
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
   '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
-  '/category/$category/brand/$brand': typeof CategoryCategoryBrandBrandRouteWithChildren
+  '/category_/$category/brand/$brand': typeof CategoryCategoryBrandBrandRoute
   '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
   '/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
   '/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
   '/demo/start/ssr/': typeof DemoStartSsrIndexRoute
-  '/category/$category/brand/$brand/item/$itemId': typeof CategoryCategoryBrandBrandItemItemIdRoute
+  '/category_/$category/brand_/$brand/item/$itemid': typeof CategoryCategoryBrandBrandItemItemidRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -142,7 +142,7 @@ export interface FileRouteTypes {
     | '/demo/start/ssr/full-ssr'
     | '/demo/start/ssr/spa-mode'
     | '/demo/start/ssr/'
-    | '/category/$category/brand/$brand/item/$itemId'
+    | '/category/$category/brand/$brand/item/$itemid'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -156,7 +156,7 @@ export interface FileRouteTypes {
     | '/demo/start/ssr/full-ssr'
     | '/demo/start/ssr/spa-mode'
     | '/demo/start/ssr'
-    | '/category/$category/brand/$brand/item/$itemId'
+    | '/category/$category/brand/$brand/item/$itemid'
   id:
     | '__root__'
     | '/'
@@ -165,25 +165,27 @@ export interface FileRouteTypes {
     | '/demo/api/names'
     | '/demo/start/api-request'
     | '/demo/start/server-funcs'
-    | '/category/$category/brand/$brand'
+    | '/category_/$category/brand/$brand'
     | '/demo/start/ssr/data-only'
     | '/demo/start/ssr/full-ssr'
     | '/demo/start/ssr/spa-mode'
     | '/demo/start/ssr/'
-    | '/category/$category/brand/$brand/item/$itemId'
+    | '/category_/$category/brand_/$brand/item/$itemid'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  CategoryCategoryRoute: typeof CategoryCategoryRouteWithChildren
+  CategoryCategoryRoute: typeof CategoryCategoryRoute
   DemoApiNamesRoute: typeof DemoApiNamesRoute
   DemoStartApiRequestRoute: typeof DemoStartApiRequestRoute
   DemoStartServerFuncsRoute: typeof DemoStartServerFuncsRoute
+  CategoryCategoryBrandBrandRoute: typeof CategoryCategoryBrandBrandRoute
   DemoStartSsrDataOnlyRoute: typeof DemoStartSsrDataOnlyRoute
   DemoStartSsrFullSsrRoute: typeof DemoStartSsrFullSsrRoute
   DemoStartSsrSpaModeRoute: typeof DemoStartSsrSpaModeRoute
   DemoStartSsrIndexRoute: typeof DemoStartSsrIndexRoute
+  CategoryCategoryBrandBrandItemItemidRoute: typeof CategoryCategoryBrandBrandItemItemidRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -258,60 +260,37 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DemoStartSsrDataOnlyRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/category/$category/brand/$brand': {
-      id: '/category/$category/brand/$brand'
-      path: '/brand/$brand'
+    '/category_/$category/brand/$brand': {
+      id: '/category_/$category/brand/$brand'
+      path: '/category/$category/brand/$brand'
       fullPath: '/category/$category/brand/$brand'
       preLoaderRoute: typeof CategoryCategoryBrandBrandRouteImport
-      parentRoute: typeof CategoryCategoryRoute
+      parentRoute: typeof rootRouteImport
     }
-    '/category/$category/brand/$brand/item/$itemId': {
-      id: '/category/$category/brand/$brand/item/$itemId'
-      path: '/item/$itemId'
-      fullPath: '/category/$category/brand/$brand/item/$itemId'
-      preLoaderRoute: typeof CategoryCategoryBrandBrandItemItemIdRouteImport
-      parentRoute: typeof CategoryCategoryBrandBrandRoute
+    '/category_/$category/brand_/$brand/item/$itemid': {
+      id: '/category_/$category/brand_/$brand/item/$itemid'
+      path: '/category/$category/brand/$brand/item/$itemid'
+      fullPath: '/category/$category/brand/$brand/item/$itemid'
+      preLoaderRoute: typeof CategoryCategoryBrandBrandItemItemidRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
-
-interface CategoryCategoryBrandBrandRouteChildren {
-  CategoryCategoryBrandBrandItemItemIdRoute: typeof CategoryCategoryBrandBrandItemItemIdRoute
-}
-
-const CategoryCategoryBrandBrandRouteChildren: CategoryCategoryBrandBrandRouteChildren =
-  {
-    CategoryCategoryBrandBrandItemItemIdRoute:
-      CategoryCategoryBrandBrandItemItemIdRoute,
-  }
-
-const CategoryCategoryBrandBrandRouteWithChildren =
-  CategoryCategoryBrandBrandRoute._addFileChildren(
-    CategoryCategoryBrandBrandRouteChildren,
-  )
-
-interface CategoryCategoryRouteChildren {
-  CategoryCategoryBrandBrandRoute: typeof CategoryCategoryBrandBrandRouteWithChildren
-}
-
-const CategoryCategoryRouteChildren: CategoryCategoryRouteChildren = {
-  CategoryCategoryBrandBrandRoute: CategoryCategoryBrandBrandRouteWithChildren,
-}
-
-const CategoryCategoryRouteWithChildren =
-  CategoryCategoryRoute._addFileChildren(CategoryCategoryRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  CategoryCategoryRoute: CategoryCategoryRouteWithChildren,
+  CategoryCategoryRoute: CategoryCategoryRoute,
   DemoApiNamesRoute: DemoApiNamesRoute,
   DemoStartApiRequestRoute: DemoStartApiRequestRoute,
   DemoStartServerFuncsRoute: DemoStartServerFuncsRoute,
+  CategoryCategoryBrandBrandRoute: CategoryCategoryBrandBrandRoute,
   DemoStartSsrDataOnlyRoute: DemoStartSsrDataOnlyRoute,
   DemoStartSsrFullSsrRoute: DemoStartSsrFullSsrRoute,
   DemoStartSsrSpaModeRoute: DemoStartSsrSpaModeRoute,
   DemoStartSsrIndexRoute: DemoStartSsrIndexRoute,
+  CategoryCategoryBrandBrandItemItemidRoute:
+    CategoryCategoryBrandBrandItemItemidRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
