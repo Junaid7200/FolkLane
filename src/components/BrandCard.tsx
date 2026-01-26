@@ -8,6 +8,15 @@ type BrandCardProps = {
 }
 
 export default function BrandCard({ id, name, category, description }: BrandCardProps) {
+  // Category-based gradient colors
+  const gradientColors: Record<string, string> = {
+    luxury: 'from-amber-400 to-orange-500',
+    casual: 'from-blue-400 to-cyan-500',
+    cheap: 'from-green-400 to-emerald-500',
+  }
+
+  const gradient = gradientColors[category] || 'from-gray-400 to-gray-500'
+
   return (
     <Link
       to={`/category/${category}/brand/${id}`}
@@ -15,7 +24,7 @@ export default function BrandCard({ id, name, category, description }: BrandCard
     >
       <div className="bg-white rounded-xl shadow-md hover:shadow-2xl transition-all overflow-hidden transform hover:-translate-y-2 h-full">
         {/* Brand Logo/Icon Area */}
-        <div className="h-48 bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center">
+        <div className={`h-48 bg-gradient-to-br ${gradient} flex items-center justify-center`}>
           <h3 className="text-4xl font-bold text-white">{name}</h3>
         </div>
 
