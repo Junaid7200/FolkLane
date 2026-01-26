@@ -12,7 +12,8 @@ export default function Hero() {
           Explore curated collections from luxury to affordable Pakistani clothing and jewelry brands
         </p>
         <Link
-          to="/category/luxury"
+          to="/category/$category"
+          params= {{ category: 'luxury' }}
           className="inline-block bg-amber-600 text-white px-10 py-4 rounded-full text-lg font-semibold hover:bg-amber-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1"
         >
           Browse Collections
