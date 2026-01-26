@@ -24,8 +24,8 @@ function RouteComponent() {
           'radial-gradient(50% 50% at 20% 60%, #1a1a1a 0%, #0a0a0a 50%, #000000 100%)',
       }}
     >
-      <div className="w-full max-w-2xl p-8 rounded-xl backdrop-blur-md bg-black/50 shadow-xl border-8 border-black/10">
-        <h1 className="text-3xl font-bold mb-6 text-green-400">
+      <div className="w-full max-w-2xl p-6 sm:p-8 rounded-xl backdrop-blur-md bg-black/50 shadow-xl border-8 border-black/10">
+        <h1 className="text-2xl sm:text-3xl font-bold mb-6 text-green-400">
           SPA Mode - Punk Songs
         </h1>
         <ul className="space-y-3">
