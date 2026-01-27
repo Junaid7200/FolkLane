@@ -34,7 +34,7 @@ function IndexPage() {
       </section>
 
       {/* Luxury Items Section */}
-      <section className="bg-gray-50 py-12 md:py-16">
+      <section className="bg-slate-50 py-12 md:py-16">
         <div className="container mx-auto px-4 sm:px-6">
           <SectionHeading
             title="Luxury Collection"
