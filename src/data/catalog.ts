@@ -42,7 +42,7 @@ const localCatalog: CatalogData = {
     { id: 'sobia-nazir', name: 'Sobia Nazir', category: 'casual', description: 'Elegant everyday fashion' },
     { id: 'jindjan', name: 'Jindjan', category: 'casual', description: 'Modern casual style' },
     { id: 'ameena', name: 'Ameena', category: 'cheap', description: 'Quality fashion on budget' },
-    { id: 'uigc-collection', name: 'UIGC Collection', category: 'cheap', description: 'Affordable everyday wear' },
+    { id: 'uigc-collection', name: 'Urge', category: 'cheap', description: 'Affordable everyday wear' },
     { id: 'mirakk', name: 'Mirakk', category: 'cheap', description: 'Value-priced fashion' },
   ],
   items: [
