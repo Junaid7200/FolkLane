@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react'
 
 export default function Slider() {
   const slides = [
-    { id: 1, text: 'Summer Collection 2026', color: 'bg-slate-200' },
-    { id: 2, text: 'Winter Elegance', color: 'bg-stone-200' },
-    { id: 3, text: 'Traditional Craftsmanship', color: 'bg-slate-300' },
+    { id: 1, text: 'Summer Collection 2026', color: 'bg-gradient-to-br from-amber-100 via-white to-amber-50' },
+    { id: 2, text: 'Winter Elegance', color: 'bg-gradient-to-br from-slate-100 via-white to-slate-200' },
+    { id: 3, text: 'Traditional Craftsmanship', color: 'bg-gradient-to-br from-stone-100 via-white to-amber-100' },
   ]
 
   const [currentSlide, setCurrentSlide] = useState(0)
