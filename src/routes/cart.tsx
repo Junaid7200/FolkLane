@@ -32,7 +32,7 @@ function CartPage() {
           <p className="text-lg text-gray-700 mb-6">Your cart is empty.</p>
           <Link
             to="/"
-            className="inline-block bg-amber-600 text-white px-8 py-3 rounded-full text-base font-semibold hover:bg-amber-700 transition-all shadow-lg"
+            className="inline-block bg-slate-900 text-white px-8 py-3 rounded-full text-base font-semibold hover:bg-slate-800 transition-all shadow-lg"
           >
             Continue shopping
           </Link>
@@ -58,13 +58,13 @@ function CartPage() {
                 </div>
 
                 <div className="flex-1">
-                  <div className="text-xs uppercase tracking-wide text-amber-600 font-semibold mb-1">
+                  <div className="text-xs uppercase tracking-wide text-slate-600 font-semibold mb-1">
                     {item.brand}
                   </div>
                   <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">
                     {item.title}
                   </h2>
-                  <div className="text-amber-600 font-bold mb-4">
+                  <div className="text-slate-900 font-bold mb-4">
                     {formatPrice(item.price)}
                   </div>
 
@@ -119,7 +119,7 @@ function CartPage() {
             </div>
             <Link
               to="/checkout"
-              className="block w-full text-center bg-amber-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-amber-700 transition-all shadow-lg"
+              className="block w-full text-center bg-slate-900 text-white px-6 py-3 rounded-full font-semibold hover:bg-slate-800 transition-all shadow-lg"
             >
               Proceed to checkout
             </Link>
