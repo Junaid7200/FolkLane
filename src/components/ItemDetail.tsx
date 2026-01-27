@@ -35,7 +35,7 @@ export default function ItemDetail({ id, title, price, description, image, brand
             <img
               src={image}
               alt={title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-top object-cover"
               onError={() => setImageError(true)}
             />
           ) : (
