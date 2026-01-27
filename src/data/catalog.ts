@@ -29,7 +29,7 @@ const localCatalog: CatalogData = {
   brands: [
     { id: 'mtf', name: 'MTF', category: 'luxury', description: 'Timeless elegance and sophistication' },
     { id: 'cosset', name: 'Cosset', category: 'luxury', description: 'Premium designer collections' },
-    { id: 'maria-nasir', name: 'Maria Nasir', category: 'luxury', description: 'Luxury fashion and jewelry' },
+    { id: 'maria-nasir', name: 'Maria Nasir', category: 'luxury', description: 'Luxury formal fashion' },
     { id: 'd-m-collection', name: 'D&M Collection', category: 'casual', description: 'Contemporary casual wear' },
     { id: 'sobia-nazir', name: 'Sobia Nazir', category: 'casual', description: 'Elegant everyday fashion' },
     { id: 'jindjan', name: 'Jindjan', category: 'casual', description: 'Modern casual style' },
