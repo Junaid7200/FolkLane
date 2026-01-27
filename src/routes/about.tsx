@@ -12,7 +12,7 @@ function AboutPage() {
         
         <div className="prose prose-lg max-w-none">
           <p className="text-xl text-gray-700 mb-6">
-            FolkLane is your premier destination for discovering authentic Pakistani clothing and jewelry brands.
+            FolkLane is your premier destination for discovering authentic Pakistani clothing brands.
             We curate the finest collections from luxury to affordable fashion, making it easy for you to explore
             and shop from Pakistan's most celebrated designers.
           </p>
@@ -27,24 +27,24 @@ function AboutPage() {
           <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-4">What We Offer</h2>
           <ul className="text-gray-700 space-y-3 mb-6">
             <li className="flex items-start">
-              <span className="text-amber-600 mr-2">✓</span>
+              <span className="text-slate-600 mr-2">✓</span>
               <span>Curated collections from 9 premium Pakistani brands</span>
             </li>
             <li className="flex items-start">
-              <span className="text-amber-600 mr-2">✓</span>
+              <span className="text-slate-600 mr-2">✓</span>
               <span>Categories ranging from luxury to affordable fashion</span>
             </li>
             <li className="flex items-start">
-              <span className="text-amber-600 mr-2">✓</span>
+              <span className="text-slate-600 mr-2">✓</span>
               <span>Easy browsing and discovery of authentic Pakistani designs</span>
             </li>
             <li className="flex items-start">
-              <span className="text-amber-600 mr-2">✓</span>
+              <span className="text-slate-600 mr-2">✓</span>
               <span>Quality fashion for every occasion and budget</span>
             </li>
           </ul>
 
-          <div className="bg-amber-50 border-l-4 border-amber-600 p-6 mt-12">
+          <div className="bg-slate-50 border-l-4 border-slate-400 p-6 mt-12">
             <p className="text-lg text-gray-800">
               <strong>Coming Soon:</strong> We're working on bringing you live inventory updates,
               exclusive deals, and an even wider selection of Pakistani fashion brands.
