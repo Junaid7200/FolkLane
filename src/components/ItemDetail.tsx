@@ -30,7 +30,7 @@ export default function ItemDetail({ id, title, price, description, image, brand
     <div className="container mx-auto px-4 sm:px-6 py-12 md:py-16">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
         {/* Image */}
-        <div className="aspect-square bg-gray-200 rounded-2xl overflow-hidden relative">
+        <div className="aspect-square bg-slate-100 rounded-2xl overflow-hidden relative">
           {!imageError ? (
             <img
               src={image}
@@ -45,13 +45,13 @@ export default function ItemDetail({ id, title, price, description, image, brand
 
         {/* Details */}
         <div className="flex flex-col justify-center">
-          <div className="text-sm text-amber-600 font-semibold mb-2 uppercase tracking-wide">
+          <div className="text-sm text-slate-600 font-semibold mb-2 uppercase tracking-wide">
             {brand}
           </div>
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             {title}
           </h1>
-          <div className="text-2xl sm:text-3xl font-bold text-amber-600 mb-6 sm:mb-8">
+          <div className="text-2xl sm:text-3xl font-bold text-slate-900 mb-6 sm:mb-8">
             Rs. {price.toLocaleString()}
           </div>
           <p className="text-base sm:text-lg text-gray-700 leading-relaxed mb-8">
@@ -60,7 +60,7 @@ export default function ItemDetail({ id, title, price, description, image, brand
           <button
             onClick={handleAddToCart}
             disabled={!canAdd}
-            className="cursor-pointer bg-amber-600 disabled:bg-amber-600/60 text-white px-8 sm:px-10 py-3 sm:py-4 rounded-full text-base sm:text-lg font-semibold hover:bg-amber-700 transition-all shadow-lg hover:shadow-xl w-full sm:w-fit text-center disabled:cursor-not-allowed"
+            className="cursor-pointer bg-slate-900 disabled:bg-slate-900/60 text-white px-8 sm:px-10 py-3 sm:py-4 rounded-full text-base sm:text-lg font-semibold hover:bg-slate-800 transition-all shadow-lg hover:shadow-xl w-full sm:w-fit text-center disabled:cursor-not-allowed"
           >
             {added ? 'Added to cart' : 'Add to cart'}
           </button>
