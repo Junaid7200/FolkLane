@@ -1,4 +1,5 @@
 import { Link } from '@tanstack/react-router'
+import { useState } from 'react'
 
 type BrandCardProps = {
   id: string
@@ -8,6 +9,9 @@ type BrandCardProps = {
 }
 
 export default function BrandCard({ id, name, category, description }: BrandCardProps) {
+  const [logoError, setLogoError] = useState(false)
+  const logoSrc = `/brands/${id}/logo.png`
+
   return (
     <Link
       to="/category/$category/brand/$brand"
@@ -16,8 +20,19 @@ export default function BrandCard({ id, name, category, description }: BrandCard
     >
       <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all overflow-hidden transform hover:-translate-y-1 h-full border border-slate-200">
         {/* Brand Logo/Icon Area */}
-        <div className="h-32 sm:h-40 md:h-48 bg-gradient-to-br from-slate-50 via-white to-amber-50 flex items-center justify-center">
-          <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 px-4 text-center">{name}</h3>
+        <div className="h-32 sm:h-40 md:h-48 bg-gradient-to-br from-slate-50 via-white to-amber-50 flex items-center justify-center p-6">
+          {!logoError ? (
+            <img
+              src={logoSrc}
+              alt={`${name} logo`}
+              className="max-h-full max-w-full object-contain"
+              onError={() => setLogoError(true)}
+            />
+          ) : (
+            <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 px-4 text-center">
+              {name}
+            </h3>
+          )}
         </div>
 
         {/* Content */}
