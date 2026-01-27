@@ -24,31 +24,31 @@ function CheckoutPage() {
             <input
               type="text"
               placeholder="Full name"
-              className="border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500"
+              className="border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-slate-400"
             />
             <input
               type="email"
               placeholder="Email"
-              className="border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500"
+              className="border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-slate-400"
             />
             <input
               type="text"
               placeholder="Phone"
-              className="border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500"
+              className="border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-slate-400"
             />
             <input
               type="text"
               placeholder="City"
-              className="border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500"
+              className="border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-slate-400"
             />
             <input
               type="text"
               placeholder="Street address"
-              className="border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500 sm:col-span-2"
+              className="border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-slate-400 sm:col-span-2"
             />
             <textarea
               placeholder="Delivery notes (optional)"
-              className="border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500 sm:col-span-2"
+              className="border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-slate-400 sm:col-span-2"
               rows={4}
             />
           </form>
@@ -71,7 +71,7 @@ function CheckoutPage() {
             <span>{formatPrice(totalPrice)}</span>
           </div>
           <button
-            className="w-full text-center bg-amber-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-amber-700 transition-all shadow-lg"
+            className="w-full text-center bg-slate-900 text-white px-6 py-3 rounded-full font-semibold hover:bg-slate-800 transition-all shadow-lg"
             type="button"
           >
             Place order (demo)
