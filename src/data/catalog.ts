@@ -53,11 +53,11 @@ const localCatalog: CatalogData = {
     { id: 'cosset-5', title: 'Exclusive Bridal Set', price: 55000, description: 'Complete bridal collection with matching accessories and premium fabrics. Designed for brides who want perfection.', brandId: 'cosset', image: PLACEHOLDER_IMAGE },
 
     // Maria Nasir (Luxury)
-    { id: 'maria-1', title: 'Designer Jewelry Set', price: 52000, description: 'Exquisite jewelry set with traditional motifs and modern craftsmanship. Includes necklace, earrings, and matching accessories.', brandId: 'maria-nasir', image: PLACEHOLDER_IMAGE },
-    { id: 'maria-2', title: 'Gold Plated Necklace', price: 55000, description: 'Stunning gold-plated necklace with intricate designs and precious stone embellishments. A timeless piece for special occasions.', brandId: 'maria-nasir', image: PLACEHOLDER_IMAGE },
-    { id: 'maria-3', title: 'Luxury Bridal Jewelry', price: 62000, description: 'Complete bridal jewelry set featuring traditional designs with contemporary flair. Perfect for your wedding day.', brandId: 'maria-nasir', image: PLACEHOLDER_IMAGE },
-    { id: 'maria-4', title: 'Premium Earring Collection', price: 38000, description: 'Elegant earring collection with matching accessories. Handcrafted with attention to detail and quality materials.', brandId: 'maria-nasir', image: PLACEHOLDER_IMAGE },
-    { id: 'maria-5', title: 'Royal Jewelry Ensemble', price: 68000, description: 'Regal jewelry ensemble with traditional craftsmanship and luxurious materials. Make a statement at any event.', brandId: 'maria-nasir', image: PLACEHOLDER_IMAGE },
+    { id: 'maria-1', title: 'Embroidered Formal Suit', price: 52000, description: 'Luxurious formal suit with intricate embroidery and premium fabric. Designed for high-end festive occasions.', brandId: 'maria-nasir', image: PLACEHOLDER_IMAGE },
+    { id: 'maria-2', title: 'Silk Peplum Set', price: 55000, description: 'Elegant silk peplum with matching trousers, crafted for modern formal wear with a classic finish.', brandId: 'maria-nasir', image: PLACEHOLDER_IMAGE },
+    { id: 'maria-3', title: 'Bridal Couture Ensemble', price: 62000, description: 'Statement bridal couture outfit with layered detailing and rich handwork for special events.', brandId: 'maria-nasir', image: PLACEHOLDER_IMAGE },
+    { id: 'maria-4', title: 'Luxury Formal Kurta', price: 38000, description: 'Premium formal kurta with refined embellishments and a tailored silhouette.', brandId: 'maria-nasir', image: PLACEHOLDER_IMAGE },
+    { id: 'maria-5', title: 'Festive Chiffon Outfit', price: 68000, description: 'Flowing chiffon outfit with delicate embroidery and a festive look, perfect for evening wear.', brandId: 'maria-nasir', image: PLACEHOLDER_IMAGE },
 
     // D&M Collection (Casual)
     { id: 'dm-1', title: 'Contemporary Kurta Set', price: 8500, description: 'Modern kurta set perfect for everyday wear. Comfortable fabric with stylish contemporary design.', brandId: 'd-m-collection', image: PLACEHOLDER_IMAGE },
@@ -96,10 +96,10 @@ const localCatalog: CatalogData = {
 
     // Mirakk (Affordable)
     { id: 'mirakk-1', title: 'Casual Kurta Set', price: 1800, description: 'Budget-friendly kurta set with good quality fabric. Perfect for casual occasions.', brandId: 'mirakk', image: PLACEHOLDER_IMAGE },
-    { id: 'mirakk-2', title: 'Simple Earrings', price: 800, description: 'Affordable earrings with simple design and decent quality. Perfect for everyday wear.', brandId: 'mirakk', image: PLACEHOLDER_IMAGE },
-    { id: 'mirakk-3', title: 'Budget Accessories', price: 1100, description: 'Collection of affordable accessories with basic designs. Great value for money.', brandId: 'mirakk', image: PLACEHOLDER_IMAGE },
+    { id: 'mirakk-2', title: 'Everyday Lawn Shirt', price: 800, description: 'Lightweight lawn shirt for daily wear with simple stitching and a comfortable fit.', brandId: 'mirakk', image: PLACEHOLDER_IMAGE },
+    { id: 'mirakk-3', title: 'Basic Cotton Trouser', price: 1100, description: 'Soft cotton trouser with an easy fit, great for everyday use.', brandId: 'mirakk', image: PLACEHOLDER_IMAGE },
     { id: 'mirakk-4', title: 'Affordable Daily Wear', price: 1500, description: 'Budget-friendly daily wear with comfortable fabric and simple design. Perfect for everyday use.', brandId: 'mirakk', image: PLACEHOLDER_IMAGE },
-    { id: 'mirakk-5', title: 'Value Jewelry Set', price: 1200, description: 'Economical jewelry set with basic design and decent quality. Ideal for casual occasions.', brandId: 'mirakk', image: PLACEHOLDER_IMAGE },
+    { id: 'mirakk-5', title: 'Value Printed Kurti', price: 1200, description: 'Printed kurti with a relaxed silhouette and everyday comfort.', brandId: 'mirakk', image: PLACEHOLDER_IMAGE },
   ],
 }
 
