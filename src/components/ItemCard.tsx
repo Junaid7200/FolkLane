@@ -29,7 +29,7 @@ export default function ItemCard({ id, title, price, image, brand, category }: I
             <img
               src={image}
               alt={title}
-              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+              className="w-full h-full object-top object-cover group-hover:scale-110 transition-transform duration-300"
               onError={() => setImageError(true)}
             />
           ) : (
