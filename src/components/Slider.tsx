@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react'
 
 export default function Slider() {
   const slides = [
-    { id: 1, text: 'Summer Collection 2026', color: 'bg-rose-400' },
-    { id: 2, text: 'Winter Elegance', color: 'bg-indigo-400' },
-    { id: 3, text: 'Traditional Craftsmanship', color: 'bg-emerald-400' },
+    { id: 1, text: 'Summer Collection 2026', color: 'bg-slate-200' },
+    { id: 2, text: 'Winter Elegance', color: 'bg-stone-200' },
+    { id: 3, text: 'Traditional Craftsmanship', color: 'bg-slate-300' },
   ]
 
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -32,7 +32,7 @@ export default function Slider() {
           }`}
         >
           <div className={`w-full h-full ${slide.color} flex items-center justify-center`}>
-            <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-white px-6 text-center">
+            <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-slate-900 px-6 text-center">
               {slide.text}
             </h2>
           </div>
