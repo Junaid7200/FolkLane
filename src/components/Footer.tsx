@@ -9,7 +9,7 @@ export default function Footer() {
           <div>
             <h3 className="text-2xl font-bold mb-4 text-amber-400">FolkLane</h3>
             <p className="text-gray-300">
-              Your destination for authentic Pakistani clothing and jewelry brands.
+              Your destination for authentic Pakistani clothing brands.
             </p>
           </div>
 
