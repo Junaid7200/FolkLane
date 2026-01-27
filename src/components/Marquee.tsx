@@ -1,5 +1,5 @@
 export default function Marquee() {
-  const text = 'New collections coming soon • Premium Pakistani fashion • Shop authentic brands'
+  const text = '✨ New Collections Coming Soon • Premium Pakistani Fashion • Shop Authentic Brands ✨'
 
   return (
     <div className="bg-slate-900 text-slate-100 py-3 overflow-hidden group">
