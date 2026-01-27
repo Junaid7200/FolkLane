@@ -134,6 +134,11 @@ export async function getBrandsByCategory(category: CategoryId) {
   return brands.filter((brand) => brand.category === category)
 }
 
+export async function getAllBrands() {
+  const { brands } = await getCatalog()
+  return brands
+}
+
 export async function getItemsByBrand(brandId: string) {
   const { items } = await getCatalog()
   return items.filter((item) => item.brandId === brandId)
