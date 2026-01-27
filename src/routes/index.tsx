@@ -5,11 +5,13 @@ import Slider from '../components/Slider'
 import CategoryCards from '../components/CategoryCards'
 import SectionHeading from '../components/SectionHeading'
 import ItemCard from '../components/ItemCard'
-import { getFeaturedItems } from '../data/catalog'
+import BrandSlider from '../components/BrandSlider'
+import { getAllBrands, getFeaturedItems } from '../data/catalog'
 
 function IndexPage() {
   const luxuryItems = Route.useLoaderData().luxuryItems
   const cheapItems = Route.useLoaderData().cheapItems
+  const brands = Route.useLoaderData().brands
 
   return (
     <div>
@@ -31,6 +33,15 @@ function IndexPage() {
           subtitle="Explore our curated collections from luxury to affordable"
         />
         <CategoryCards />
+      </section>
+
+      {/* Brands Slider Section */}
+      <section className="container mx-auto px-4 sm:px-6 py-12 md:py-16">
+        <SectionHeading
+          title="Featured Brands"
+          subtitle="Browse top Pakistani brands across every style"
+        />
+        <BrandSlider brands={brands} />
       </section>
 
       {/* Luxury Items Section */}
@@ -85,8 +96,9 @@ function IndexPage() {
 export const Route = createFileRoute('/')({
   component: IndexPage,
   loader: async () => {
+    const brands = await getAllBrands()
     const luxuryItems = await getFeaturedItems({ sort: 'desc', limit: 6 })
     const cheapItems = await getFeaturedItems({ sort: 'asc', limit: 6 })
-    return { luxuryItems, cheapItems }
+    return { brands, luxuryItems, cheapItems }
   },
 })
