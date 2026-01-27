@@ -16,9 +16,9 @@ export default function BrandCard({ id, name, category, description }: BrandCard
     <Link
       to="/category/$category/brand/$brand"
       params= {{ category: category, brand: id }}
-      className="group block"
+      className="group block h-full"
     >
-      <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all overflow-hidden transform hover:-translate-y-1 h-full border border-slate-200">
+      <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all overflow-hidden transform hover:-translate-y-1 h-full border border-slate-200 flex flex-col">
         {/* Brand Logo/Icon Area */}
         <div className="h-32 sm:h-40 md:h-48 bg-gradient-to-br from-slate-50 via-white to-amber-50 flex items-center justify-center p-6">
           {!logoError ? (
@@ -36,12 +36,12 @@ export default function BrandCard({ id, name, category, description }: BrandCard
         </div>
 
         {/* Content */}
-        <div className="p-5 sm:p-6">
-          <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 group-hover:text-amber-700 transition-colors">
+        <div className="p-5 sm:p-6 flex-1">
+          <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 group-hover:text-amber-700 transition-colors line-clamp-1">
             {name}
           </h3>
           {description && (
-            <p className="text-gray-600 mb-4">{description}</p>
+            <p className="text-gray-600 mb-4 line-clamp-1">{description}</p>
           )}
           <div className="text-amber-700 font-semibold group-hover:underline">
             View Collection →
