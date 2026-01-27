@@ -22,7 +22,7 @@ export default function ItemCard({ id, title, price, image, brand, category }: I
       params= {{ category: category, brand: brand, itemid: id }}
       className="group block"
     >
-      <div className="bg-white rounded-xl shadow-md hover:shadow-2xl transition-all overflow-hidden transform hover:-translate-y-1">
+      <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all overflow-hidden transform hover:-translate-y-1 border border-slate-200">
         {/* Image */}
         <div className="aspect-square bg-gray-200 overflow-hidden relative">
           {!imageError ? (
@@ -39,10 +39,10 @@ export default function ItemCard({ id, title, price, image, brand, category }: I
 
         {/* Content */}
         <div className="p-4 sm:p-5">
-          <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-amber-600 transition-colors">
+          <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-slate-700 transition-colors">
             {title}
           </h3>
-          <p className="text-xl sm:text-2xl font-bold text-amber-600">
+          <p className="text-xl sm:text-2xl font-bold text-slate-900">
             Rs. {price.toLocaleString()}
           </p>
         </div>
