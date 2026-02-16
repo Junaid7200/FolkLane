@@ -11,7 +11,11 @@ import {
 import { enqueueScrapeBrandJob } from '@/server/queue/jobs/scrapeBrand.job'
 
 const MAX_RETRY_ATTEMPTS = 3
-const SUPPORTED_MANUAL_SCRAPE_BRANDS = ['jindjan', 'd-m-collection'] as const
+const SUPPORTED_MANUAL_SCRAPE_BRANDS = [
+  'jindjan',
+  'd-m-collection',
+  'maria-nasir',
+] as const
 type SupportedManualScrapeBrand = (typeof SUPPORTED_MANUAL_SCRAPE_BRANDS)[number]
 
 function isSupportedManualScrapeBrand(
