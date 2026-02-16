@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import ImagePlaceholder from './ImagePlaceholder'
 import { useCart } from '../context/CartContext'
 
@@ -8,20 +8,52 @@ type ItemDetailProps = {
   price: number
   description: string
   image: string
+  images?: string[]
   brand: string
 }
 
-export default function ItemDetail({ id, title, price, description, image, brand }: ItemDetailProps) {
+export default function ItemDetail({
+  id,
+  title,
+  price,
+  description,
+  image,
+  images,
+  brand,
+}: ItemDetailProps) {
   const { addItem } = useCart()
-  const isPlaceholderPath = image === '/placeholder.jpg' || !image
-  const [imageError, setImageError] = useState(isPlaceholderPath)
+  const galleryImages = useMemo(() => {
+    const candidates = images && images.length > 0 ? images : [image]
+    const cleaned = candidates.filter((img): img is string => Boolean(img))
+    const unique = Array.from(new Set(cleaned))
+    return unique.length > 0 ? unique : ['/placeholder.jpg']
+  }, [images, image])
+
+  const [selectedImage, setSelectedImage] = useState(galleryImages[0])
+  const [failedImages, setFailedImages] = useState<Record<string, true>>({})
+  const [imageError, setImageError] = useState(false)
   const [added, setAdded] = useState(false)
+
+  useEffect(() => {
+    setSelectedImage(galleryImages[0])
+    setFailedImages({})
+  }, [id, galleryImages])
+
+  const visibleImages = galleryImages.filter((img) => !failedImages[img])
+  const activeImage = visibleImages.includes(selectedImage)
+    ? selectedImage
+    : visibleImages[0] || '/placeholder.jpg'
+  const isPlaceholderPath = activeImage === '/placeholder.jpg' || !activeImage
+
+  useEffect(() => {
+    setImageError(isPlaceholderPath)
+  }, [activeImage, isPlaceholderPath])
 
   const canAdd = price > 0 && id.length > 0
 
   const handleAddToCart = () => {
     if (!canAdd) return
-    addItem({ id, title, price, image, brand })
+    addItem({ id, title, price, image: activeImage, brand })
     setAdded(true)
     window.setTimeout(() => setAdded(false), 1200)
   }
@@ -29,21 +61,53 @@ export default function ItemDetail({ id, title, price, description, image, brand
   return (
     <div className="container mx-auto px-4 sm:px-6 py-12 md:py-16">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-        {/* Image */}
-        <div className="aspect-square bg-slate-100 rounded-2xl overflow-hidden relative">
-          {!imageError ? (
-            <img
-              src={image}
-              alt={title}
-              className="w-full h-full object-top object-cover"
-              onError={() => setImageError(true)}
-            />
-          ) : (
-            <ImagePlaceholder className="w-full h-full" />
+        <div>
+          <div className="aspect-square bg-slate-100 rounded-2xl overflow-hidden relative">
+            {!imageError ? (
+              <img
+                src={activeImage}
+                alt={title}
+                className="w-full h-full object-top object-cover"
+                onError={() => {
+                  setFailedImages((prev) => ({ ...prev, [activeImage]: true }))
+                  setImageError(true)
+                }}
+              />
+            ) : (
+              <ImagePlaceholder className="w-full h-full" />
+            )}
+          </div>
+
+          {galleryImages.length > 1 && (
+            <div className="mt-4 grid grid-cols-4 sm:grid-cols-5 gap-3">
+              {galleryImages
+                .filter((img) => !failedImages[img])
+                .map((thumb, index) => (
+                  <button
+                    key={`${thumb}-${index}`}
+                    type="button"
+                    onClick={() => setSelectedImage(thumb)}
+                    className={`aspect-square rounded-lg overflow-hidden border-2 transition-colors ${
+                      activeImage === thumb
+                        ? 'border-slate-900'
+                        : 'border-slate-200 hover:border-slate-400'
+                    }`}
+                    aria-label={`View image ${index + 1}`}
+                  >
+                    <img
+                      src={thumb}
+                      alt={`${title} image ${index + 1}`}
+                      className="w-full h-full object-cover object-top"
+                      onError={() =>
+                        setFailedImages((prev) => ({ ...prev, [thumb]: true }))
+                      }
+                    />
+                  </button>
+                ))}
+            </div>
           )}
         </div>
 
-        {/* Details */}
         <div className="flex flex-col justify-center">
           <div className="text-sm text-slate-600 font-semibold mb-2 uppercase tracking-wide">
             {brand}

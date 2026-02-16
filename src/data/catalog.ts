@@ -14,6 +14,7 @@ export type Item = {
   price: number
   brandId: string
   image: string
+  images?: string[]
 }
 
 export type CatalogData = {
@@ -26,10 +27,18 @@ const PLACEHOLDER_IMAGE = '/placeholder.jpg'
 const BRAND_IMAGE_DIR = '/brands'
 
 function withFallbackImage(items: Item[]): Item[] {
-  return items.map((item) => ({
-    ...item,
-    image: item.image || PLACEHOLDER_IMAGE,
-  }))
+  return items.map((item) => {
+    const cleanedImages = (item.images || []).filter(
+      (img): img is string => Boolean(img),
+    )
+    const primaryImage = item.image || cleanedImages[0] || PLACEHOLDER_IMAGE
+
+    return {
+      ...item,
+      image: primaryImage,
+      images: cleanedImages.length > 0 ? cleanedImages : [primaryImage],
+    }
+  })
 }
 
 const localCatalog: CatalogData = {
@@ -47,7 +56,21 @@ const localCatalog: CatalogData = {
   ],
   items: [
     // MTF (Luxury)
-    { id: 'mtf-1', title: 'Elegant Bridal Dress', price: 45000, description: 'A stunning bridal dress crafted with intricate embroidery and premium fabrics. Perfect for your special day, this piece combines traditional elegance with contemporary design.', brandId: 'mtf', image: `${BRAND_IMAGE_DIR}/mtf/mtf-1.jpg` },
+    {
+      id: 'mtf-1',
+      title: 'Elegant Bridal Dress',
+      price: 45000,
+      description:
+        'A stunning bridal dress crafted with intricate embroidery and premium fabrics. Perfect for your special day, this piece combines traditional elegance with contemporary design.',
+      brandId: 'mtf',
+      image: `${BRAND_IMAGE_DIR}/mtf/mtf-1.jpg`,
+      images: [
+        `${BRAND_IMAGE_DIR}/mtf/mtf-1.jpg`,
+        `${BRAND_IMAGE_DIR}/cosset/cosset-2.jpg`,
+        `${BRAND_IMAGE_DIR}/maria-nasir/maria-3.jpg`,
+        `${BRAND_IMAGE_DIR}/sobia-nazir/sobia-5.jpg`,
+      ],
+    },
     { id: 'mtf-2', title: 'Luxury Embroidered Shawl', price: 42000, description: 'Exquisite handwoven shawl featuring traditional embroidery and luxurious fabric. A timeless addition to any formal outfit.', brandId: 'mtf', image: `${BRAND_IMAGE_DIR}/mtf/mtf-2.jpg` },
     { id: 'mtf-3', title: 'Designer Wedding Collection', price: 48000, description: 'Complete wedding ensemble with intricate detailing and premium materials. Designed for those who seek perfection on their special day.', brandId: 'mtf', image: `${BRAND_IMAGE_DIR}/mtf/mtf-3.jpg` },
     { id: 'mtf-4', title: 'Premium Silk Ensemble', price: 39000, description: 'Pure silk outfit with delicate handwork and elegant draping. Perfect for festive occasions and celebrations.', brandId: 'mtf', image: `${BRAND_IMAGE_DIR}/mtf/mtf-4.jpg` },

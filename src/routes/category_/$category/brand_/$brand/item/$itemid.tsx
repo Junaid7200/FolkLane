@@ -26,6 +26,7 @@ function ItemPage() {
     price: 0,
     description: 'This item is currently unavailable.',
     image: '/placeholder.jpg',
+    images: ['/placeholder.jpg'],
   }
   const displayItem = item ?? fallback
   const displayBrand = item ? brandName : 'Unknown'
@@ -37,6 +38,7 @@ function ItemPage() {
       price={displayItem.price}
       description={displayItem.description}
       image={displayItem.image}
+      images={displayItem.images}
       brand={displayBrand}
     />
   )
