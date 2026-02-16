@@ -67,7 +67,7 @@ const localCatalog: CatalogData = {
     { id: 'd-m-collection', name: 'D&M Collection', category: 'casual', description: 'Contemporary casual wear' },
     { id: 'sobia-nazir', name: 'Sobia Nazir', category: 'casual', description: 'Elegant everyday fashion' },
     { id: 'jindjan', name: 'Jindjan', category: 'casual', description: 'Modern casual style' },
-    { id: 'saima', name: 'Saima', category: 'cheap', description: 'Quality fashion on budget' },
+    { id: 'saima', name: 'Saima Collection', category: 'cheap', description: 'Quality fashion on budget' },
     { id: 'uigc-collection', name: 'Urge', category: 'cheap', description: 'Affordable everyday wear' },
     { id: 'mirakk', name: 'Mirakk', category: 'cheap', description: 'Value-priced fashion' },
     { id: 'royal-garments', name: 'Royal Garments', category: 'cheap', description: 'Budget-friendly festive and casual picks' },
