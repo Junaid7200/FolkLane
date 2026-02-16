@@ -5,6 +5,7 @@ import type { ProductRow } from '../../db/schema'
 import { scrapeDmCollection } from '../brands/dmCollection.scraper'
 import { scrapeJindjan } from '../brands/jindjan.scraper'
 import { scrapeMariaNasir } from '../brands/mariaNasir.scraper'
+import { scrapeMirakk } from '../brands/mirakk.scraper'
 import type { BrandScrapeResult, ScrapeOptions } from '../base/types'
 
 function nowIso() {
@@ -47,6 +48,9 @@ async function scrapeByBrand(
   }
   if (brandId === 'maria-nasir') {
     return scrapeMariaNasir(options)
+  }
+  if (brandId === 'mirakk') {
+    return scrapeMirakk(options)
   }
 
   throw new Error(`No scraper implemented for brand: ${brandId}`)

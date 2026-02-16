@@ -1,6 +1,10 @@
 import { load } from 'cheerio'
 import { serverConfig } from '../../config/env'
-import type { BrandScrapeResult, ScrapeOptions, ScrapedProduct } from '../base/types'
+import type {
+  BrandScrapeResult,
+  ScrapeOptions,
+  ScrapedProduct,
+} from '../base/types'
 import {
   absoluteUrl,
   dedupeImageUrls,
@@ -12,9 +16,9 @@ import {
   safeProductId,
 } from '../base/utils'
 
-const BRAND_ID = 'maria-nasir'
-const BASE_URL = 'https://marianasir.com'
-const COLLECTION_SLUG = 'best-seller'
+const BRAND_ID = 'mirakk'
+const BASE_URL = 'https://www.mirakk.com'
+const COLLECTION_SLUG = 'new-arrivals-1'
 const IMAGE_FILE_PATTERN = /\.(jpg|jpeg|png|webp|avif|gif)(\?|$)/i
 
 type ShopifyProductJson = {
@@ -29,73 +33,6 @@ type ShopifyProductJson = {
 }
 
 type MoneyCurrency = 'USD' | 'PKR' | 'UNKNOWN'
-const JEWELRY_KEYWORDS = [
-  'jewelry',
-  'jewellery',
-  'necklace',
-  'earring',
-  'earrings',
-  'bracelet',
-  'bracelets',
-  'ring',
-  'rings',
-  'pendant',
-  'pendants',
-  'chain',
-  'chains',
-  'bangle',
-  'bangles',
-  'anklet',
-  'anklets',
-  'choker',
-  'chokers',
-  'brooch',
-  'brooches',
-  'jhumka',
-  'jhumki',
-  'jhumar',
-  'bali',
-  'baali',
-  'baaliyan',
-  'jadau',
-  'judau',
-  'moti',
-  'tikka',
-  'maang',
-  'payal',
-  'kundan',
-]
-const CLOTHING_KEYWORDS = [
-  'dress',
-  'dresses',
-  'suit',
-  'suits',
-  'kurta',
-  'kurti',
-  'shirt',
-  'blouse',
-  'kameez',
-  'shalwar',
-  'trouser',
-  'trousers',
-  'lehenga',
-  'lehnga',
-  'ghagra',
-  'gharara',
-  'sharara',
-  'anarkali',
-  'frock',
-  'gown',
-  'maxi',
-  'kaftan',
-  'saree',
-  'sari',
-  'choli',
-  'peplum',
-  'angarkha',
-  'angrakha',
-  'dupatta',
-]
 
 function getCollectionPageUrl(page: number) {
   const url = new URL(`/collections/${COLLECTION_SLUG}`, BASE_URL)
@@ -236,14 +173,15 @@ function sanitizeGalleryImages(images: string[]): string[] {
 
 function parseDomGalleryImages($: ReturnType<typeof load>): string[] {
   const rawValues: string[] = []
-
   const selectors = [
-    'a.product_thumb',
-    'a[href*="/cdn/shop/files/"]',
-    '[data-bgset]',
-    '[data-src]',
-    '[data-zoom]',
+    '.product__media img.image-magnify-hover',
+    '.product__media img[src*="/cdn/shop/files/"]',
+    'img.image-magnify-hover',
     'img[src*="/cdn/shop/files/"]',
+    '[data-src*="/cdn/shop/files/"]',
+    '[data-bgset]',
+    '[data-zoom]',
+    'img[srcset*="/cdn/shop/files/"]',
   ]
 
   $(selectors.join(',')).each((_, element) => {
@@ -365,7 +303,7 @@ function detectCurrencyFromDom(
       $('[itemprop="price"]').first().text() ||
       $('[class*="price"]').first().text() ||
       '',
-  )
+  ).toUpperCase()
   if (priceText.includes('$')) return 'USD'
   if (priceText.includes('RS') || priceText.includes('PKR')) return 'PKR'
 
@@ -417,82 +355,23 @@ function parseShopifyDescription(data: ShopifyProductJson): string {
   return normalizeWhitespace($.text())
 }
 
-function parseDomAmount($: ReturnType<typeof load>): number | null {
-  const candidates = [
-    $('meta[property="product:price:amount"]').attr('content') || '',
-    $('[itemprop="price"]').attr('content') || '',
-    $('.price .money').first().text() || '',
-    $('[class*="price"]').first().text() || '',
-  ]
-
-  for (const candidate of candidates) {
-    const amount = parseAmount(normalizeWhitespace(candidate))
-    if (amount !== null) return amount
-  }
-
-  return null
-}
-
-function textContainsAnyKeyword(text: string, keywords: string[]) {
-  const lowered = text.toLowerCase()
-  return keywords.some((keyword) => lowered.includes(keyword))
-}
-
-function isClothingProduct(title: string, description: string): boolean {
-  const combined = `${title} ${description}`
-
-  if (textContainsAnyKeyword(combined, JEWELRY_KEYWORDS)) return false
-  return textContainsAnyKeyword(combined, CLOTHING_KEYWORDS)
-}
-
 function extractFullDescription($: ReturnType<typeof load>): string {
   const candidates: string[] = []
-
-  // Try multiple selectors to find full in-page product description content.
   const selectors = [
-    '.product-description',
+    '.product__description.rte.quick-add-hidden',
+    '.product__description.rte',
     '.product__description',
-    '[class*="product"][class*="description"]',
-    '.description',
+    '[class*="product__description"]',
+    '.rte',
     '[itemprop="description"]',
-    '.product-single__description',
-    '.product__desc',
-    '#product-description',
   ]
 
   for (const selector of selectors) {
     $(selector).each((_, element) => {
-      const block = $(element)
-      const text = normalizeWhitespace(block.text())
-      if (text.length >= 40) {
-        candidates.push(text)
-      }
+      const text = normalizeWhitespace($(element).text())
+      if (text.length >= 40) candidates.push(text)
     })
   }
-
-  // Capture Product JSON-LD description as a richer fallback when present.
-  $('script[type="application/ld+json"]').each((_, element) => {
-    const raw = $(element).html()
-    if (!raw) return
-
-    try {
-      const parsed = JSON.parse(raw) as unknown
-      const blocks = Array.isArray(parsed) ? parsed : [parsed]
-      for (const block of blocks) {
-        if (!block || typeof block !== 'object') continue
-        const obj = block as Record<string, unknown>
-        const typeValue = obj['@type']
-        const isProduct =
-          typeValue === 'Product' ||
-          (Array.isArray(typeValue) && typeValue.includes('Product'))
-        if (!isProduct) continue
-        const description = normalizeWhitespace(String(obj.description || ''))
-        if (description.length >= 40) candidates.push(description)
-      }
-    } catch {
-      // Ignore malformed JSON-LD blocks.
-    }
-  })
 
   const metaDescription = normalizeWhitespace(
     $('meta[name="description"]').attr('content') ||
@@ -504,6 +383,25 @@ function extractFullDescription($: ReturnType<typeof load>): string {
   const deduped = dedupeStrings(candidates)
   deduped.sort((a, b) => b.length - a.length)
   return deduped[0] || ''
+}
+
+function parseDomAmount($: ReturnType<typeof load>): number | null {
+  const candidates = [
+    $('meta[property="product:price:amount"]').attr('content') || '',
+    $('[itemprop="price"]').attr('content') || '',
+    $('[itemprop="price"]').first().text() || '',
+    $('.price .price-item--sale').first().text() || '',
+    $('.price .money').first().text() || '',
+    $('[class*="price"] .money').first().text() || '',
+    $('[class*="price"]').first().text() || '',
+  ]
+
+  for (const candidate of candidates) {
+    const amount = parseAmount(normalizeWhitespace(candidate))
+    if (amount !== null) return amount
+  }
+
+  return null
 }
 
 async function parseProduct(
@@ -533,7 +431,7 @@ async function parseProduct(
     shopifyImages = parseShopifyImages(shopifyData)
     shopifyAmount = parseShopifyAmount(shopifyData)
   } catch {
-    // Continue with non-JSON endpoint fallbacks.
+    // Continue with DOM and JSON-LD fallbacks.
   }
 
   const descriptionCandidates = dedupeStrings([
@@ -542,9 +440,6 @@ async function parseProduct(
   ])
   descriptionCandidates.sort((a, b) => b.length - a.length)
   const description = descriptionCandidates[0] || ''
-
-  // Filter out jewelry and non-clothing items using title + best description.
-  if (!isClothingProduct(title, description)) return null
 
   const domImages = parseDomGalleryImages($)
   const ogImage = $('meta[property="og:image"]').attr('content')
@@ -597,7 +492,7 @@ async function collectProductUrls(opts: ScrapeOptions): Promise<string[]> {
   return urls
 }
 
-export async function scrapeMariaNasir(
+export async function scrapeMirakk(
   opts: ScrapeOptions,
 ): Promise<BrandScrapeResult> {
   const productUrls = await collectProductUrls(opts)

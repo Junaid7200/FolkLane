@@ -15,6 +15,7 @@ const SUPPORTED_MANUAL_SCRAPE_BRANDS = [
   'jindjan',
   'd-m-collection',
   'maria-nasir',
+  'mirakk',
 ] as const
 type SupportedManualScrapeBrand = (typeof SUPPORTED_MANUAL_SCRAPE_BRANDS)[number]
 
