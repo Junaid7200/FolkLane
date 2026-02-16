@@ -21,6 +21,7 @@ const SUPPORTED_MANUAL_SCRAPE_BRANDS = [
   'sobia-nazir',
   'uigc-collection',
   'saima',
+  'khalid-rashid-fabrics',
 ] as const
 type SupportedManualScrapeBrand = (typeof SUPPORTED_MANUAL_SCRAPE_BRANDS)[number]
 

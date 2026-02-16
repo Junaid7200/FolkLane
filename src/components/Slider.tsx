@@ -14,7 +14,7 @@ type Slide = {
 const slides: Slide[] = [
   {
     id: 1,
-    image: '/brands/maria-nasir/maria-3.jpg',
+    image: '/brands/cosset/cosset-1.jpg',
     eyebrow: 'Luxury Edit',
     title: 'Statement Looks for Celebrations',
     description:
@@ -24,7 +24,7 @@ const slides: Slide[] = [
   },
   {
     id: 2,
-    image: '/brands/sobia-nazir/sobia-1.jpg',
+    image: '/brands/sobia-nazir/sobia-4.jpg',
     eyebrow: 'Daily Elegance',
     title: 'Everyday Style, Refined',
     description:
@@ -34,7 +34,7 @@ const slides: Slide[] = [
   },
   {
     id: 3,
-    image: '/brands/mirakk/mirakk-4.jpg',
+    image: '/brands/saima/saima-4.jpg',
     eyebrow: 'Value Picks',
     title: 'Fashion That Fits Your Budget',
     description:

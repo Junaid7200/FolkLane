@@ -55,3 +55,10 @@ export async function seedCatalogIfEmpty() {
   upsertProducts(db, normalizeProducts(products))
   return true
 }
+
+export async function ensureLocalBrandsUpserted() {
+  const db = getDatabase()
+  const brands = getLocalBrands()
+  upsertBrands(db, normalizeBrands(brands))
+  return brands.length
+}

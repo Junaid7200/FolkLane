@@ -70,6 +70,8 @@ const localCatalog: CatalogData = {
     { id: 'saima', name: 'Saima', category: 'cheap', description: 'Quality fashion on budget' },
     { id: 'uigc-collection', name: 'Urge', category: 'cheap', description: 'Affordable everyday wear' },
     { id: 'mirakk', name: 'Mirakk', category: 'cheap', description: 'Value-priced fashion' },
+    { id: 'royal-garments', name: 'Royal Garments', category: 'cheap', description: 'Budget-friendly festive and casual picks' },
+    { id: 'khalid-rashid-fabrics', name: 'Khalid Rashid Fabrics', category: 'casual', description: 'Seasonal lawn and fabric collections' },
   ],
   items: [
     // MTF (Luxury)

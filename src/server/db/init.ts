@@ -1,5 +1,5 @@
 import { getDatabase } from './client'
-import { seedCatalogIfEmpty } from './seed'
+import { ensureLocalBrandsUpserted, seedCatalogIfEmpty } from './seed'
 
 let initPromise: Promise<void> | null = null
 
@@ -165,6 +165,7 @@ export async function ensureDatabaseReady() {
   if (!initPromise) {
     initPromise = (async () => {
       initializeSchema()
+      await ensureLocalBrandsUpserted()
       await seedCatalogIfEmpty()
     })()
   }
