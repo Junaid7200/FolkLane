@@ -1,13 +1,12 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { listBrands, listBrandProducts } from '@/server/api/catalogApi'
+import { hasBrand, listBrandProducts } from '@/server/api/catalogApi'
 
 export const Route = createFileRoute('/api/brands/$brandId/products')({
   component: () => null,
   server: {
     handlers: {
       GET: async ({ params }) => {
-        const brands = await listBrands()
-        const brandExists = brands.some((brand) => brand.id === params.brandId)
+        const brandExists = await hasBrand(params.brandId)
 
         if (!brandExists) {
           return Response.json(
@@ -22,4 +21,3 @@ export const Route = createFileRoute('/api/brands/$brandId/products')({
     },
   },
 })
-

@@ -1,9 +1,15 @@
 import {
-  getAllBrands,
-  getItemById,
-  getItemsByBrand,
-  isCategory,
-} from '@/data/catalog'
+  ensureDatabaseReady,
+} from '@/server/db/init'
+import { getDatabase } from '@/server/db/client'
+import {
+  findAllBrands,
+  findBrandById,
+} from '@/server/db/repositories/brandsRepo'
+import {
+  findProductById,
+  findProductsByBrand,
+} from '@/server/db/repositories/productsRepo'
 
 export type ApiBrand = {
   id: string
@@ -23,37 +29,61 @@ export type ApiProduct = {
 }
 
 export async function listBrands(): Promise<ApiBrand[]> {
-  const brands = await getAllBrands()
-  return brands.filter((brand): brand is ApiBrand => isCategory(brand.category))
+  await ensureDatabaseReady()
+  const db = getDatabase()
+  const brands = findAllBrands(db)
+
+  return brands.map((brand) => ({
+    id: brand.id,
+    name: brand.name,
+    category: brand.category,
+    description: brand.description ?? undefined,
+  }))
 }
 
 export async function listBrandProducts(brandId: string): Promise<ApiProduct[]> {
-  const items = await getItemsByBrand(brandId)
-  return items.map((item) => ({
-    id: item.id,
-    title: item.title,
-    description: item.description,
-    price: item.price,
-    brandId: item.brandId,
-    image: item.image,
-    images: item.images && item.images.length > 0 ? item.images : [item.image],
+  await ensureDatabaseReady()
+  const db = getDatabase()
+  const products = findProductsByBrand(db, brandId)
+
+  return products.map((product) => ({
+    id: product.id,
+    title: product.title,
+    description: product.description,
+    price: product.price,
+    brandId: product.brandId,
+    image: product.image,
+    images:
+      product.images && product.images.length > 0
+        ? product.images
+        : [product.image],
   }))
 }
 
 export async function getProduct(
   productId: string,
 ): Promise<ApiProduct | undefined> {
-  const item = await getItemById(productId)
-  if (!item) return undefined
+  await ensureDatabaseReady()
+  const db = getDatabase()
+  const product = findProductById(db, productId)
+  if (!product) return undefined
 
   return {
-    id: item.id,
-    title: item.title,
-    description: item.description,
-    price: item.price,
-    brandId: item.brandId,
-    image: item.image,
-    images: item.images && item.images.length > 0 ? item.images : [item.image],
+    id: product.id,
+    title: product.title,
+    description: product.description,
+    price: product.price,
+    brandId: product.brandId,
+    image: product.image,
+    images:
+      product.images && product.images.length > 0
+        ? product.images
+        : [product.image],
   }
 }
 
+export async function hasBrand(brandId: string) {
+  await ensureDatabaseReady()
+  const db = getDatabase()
+  return Boolean(findBrandById(db, brandId))
+}

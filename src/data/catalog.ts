@@ -167,6 +167,11 @@ export async function getItemsByBrand(brandId: string) {
   return items.filter((item) => item.brandId === brandId)
 }
 
+export async function getAllItems() {
+  const { items } = await getCatalog()
+  return items
+}
+
 export async function getItemById(itemId: string) {
   const { items } = await getCatalog()
   return items.find((item) => item.id === itemId)

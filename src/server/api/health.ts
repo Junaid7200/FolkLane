@@ -1,6 +1,7 @@
 import { createServerFn } from '@tanstack/react-start'
 import { serverConfig } from '../config/env'
 import { getDatabaseClientState } from '../db/client'
+import { ensureDatabaseReady } from '../db/init'
 
 export type BackendHealth = {
   status: 'ok'
@@ -22,6 +23,7 @@ export type BackendHealth = {
 export const getBackendHealth = createServerFn({
   method: 'GET',
 }).handler(async (): Promise<BackendHealth> => {
+  await ensureDatabaseReady()
   const db = getDatabaseClientState()
 
   return {
@@ -41,4 +43,3 @@ export const getBackendHealth = createServerFn({
     },
   }
 })
-
