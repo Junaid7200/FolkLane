@@ -30,6 +30,85 @@ function ensureScrapeRunsColumns(db: ReturnType<typeof getDatabase>) {
   }
 }
 
+function migrateAmeenaToSaima(db: ReturnType<typeof getDatabase>) {
+  const legacyBrand = db
+    .prepare(
+      `SELECT id, name, category, description, created_at, updated_at
+       FROM brands
+       WHERE id = 'ameena'`,
+    )
+    .get() as
+    | {
+        id: string
+        name: string
+        category: string
+        description: string | null
+        created_at: string
+        updated_at: string
+      }
+    | undefined
+
+  if (!legacyBrand) return
+
+  const saimaBrandExists = Boolean(
+    db
+      .prepare(`SELECT 1 FROM brands WHERE id = 'saima' LIMIT 1`)
+      .get(),
+  )
+  const now = new Date().toISOString()
+
+  const tx = db.transaction(() => {
+    if (!saimaBrandExists) {
+      db.prepare(
+        `INSERT INTO brands (id, name, category, description, created_at, updated_at)
+         VALUES (?, ?, ?, ?, ?, ?)`,
+      ).run(
+        'saima',
+        'Saima',
+        legacyBrand.category,
+        legacyBrand.description,
+        legacyBrand.created_at || now,
+        now,
+      )
+    } else {
+      db.prepare(`UPDATE brands SET name = ?, updated_at = ? WHERE id = ?`).run(
+        'Saima',
+        now,
+        'saima',
+      )
+    }
+
+    db.prepare(`UPDATE products SET brand_id = 'saima' WHERE brand_id = 'ameena'`).run()
+    db.prepare(
+      `UPDATE scrape_runs SET brand_id = 'saima' WHERE brand_id = 'ameena'`,
+    ).run()
+
+    const legacyProducts = db
+      .prepare(
+        `SELECT id FROM products WHERE brand_id = 'saima' AND id LIKE 'ameena-%'`,
+      )
+      .all() as Array<{ id: string }>
+
+    const hasProductIdStmt = db.prepare(
+      `SELECT 1 FROM products WHERE id = ? LIMIT 1`,
+    )
+    const renameProductIdStmt = db.prepare(
+      `UPDATE products SET id = ? WHERE id = ?`,
+    )
+
+    for (const product of legacyProducts) {
+      const candidateId = `saima-${product.id.slice('ameena-'.length)}`
+      const idTaken = Boolean(hasProductIdStmt.get(candidateId))
+      if (idTaken) continue
+      renameProductIdStmt.run(candidateId, product.id)
+    }
+
+    db.prepare(`DELETE FROM brands WHERE id = 'ameena'`).run()
+  })
+
+  tx()
+}
+
 function initializeSchema() {
   const db = getDatabase()
 
@@ -76,6 +155,7 @@ function initializeSchema() {
   `)
 
   ensureScrapeRunsColumns(db)
+  migrateAmeenaToSaima(db)
   db.exec(
     `CREATE INDEX IF NOT EXISTS idx_scrape_runs_queue_job_id ON scrape_runs(queue_job_id);`,
   )

@@ -67,7 +67,7 @@ const localCatalog: CatalogData = {
     { id: 'd-m-collection', name: 'D&M Collection', category: 'casual', description: 'Contemporary casual wear' },
     { id: 'sobia-nazir', name: 'Sobia Nazir', category: 'casual', description: 'Elegant everyday fashion' },
     { id: 'jindjan', name: 'Jindjan', category: 'casual', description: 'Modern casual style' },
-    { id: 'ameena', name: 'Ameena', category: 'cheap', description: 'Quality fashion on budget' },
+    { id: 'saima', name: 'Saima', category: 'cheap', description: 'Quality fashion on budget' },
     { id: 'uigc-collection', name: 'Urge', category: 'cheap', description: 'Affordable everyday wear' },
     { id: 'mirakk', name: 'Mirakk', category: 'cheap', description: 'Value-priced fashion' },
   ],
@@ -128,12 +128,12 @@ const localCatalog: CatalogData = {
     { id: 'jindjan-4', title: 'Comfortable Daily Outfit', price: 6200, description: 'Versatile daily outfit with comfortable fit and easy maintenance. Perfect for everyday activities.', brandId: 'jindjan', image: `${BRAND_IMAGE_DIR}/jindjan/jindjan-4.jpg` },
     { id: 'jindjan-5', title: 'Stylish Casual Set', price: 7200, description: 'Modern casual set with trendy design and comfortable fabric. Ideal for casual outings and daily wear.', brandId: 'jindjan', image: `${BRAND_IMAGE_DIR}/jindjan/jindjan-5.jpg` },
 
-    // Ameena (Affordable)
-    { id: 'ameena-1', title: 'Cotton Summer Lawn', price: 2500, description: 'Affordable cotton lawn perfect for hot summer days. Breathable fabric with attractive prints.', brandId: 'ameena', image: `${BRAND_IMAGE_DIR}/ameena/ameena-1.jpg` },
-    { id: 'ameena-2', title: 'Basic Trouser Set', price: 1500, description: 'Simple and comfortable trouser set for everyday wear. Budget-friendly with good quality fabric.', brandId: 'ameena', image: `${BRAND_IMAGE_DIR}/ameena/ameena-2.jpg` },
-    { id: 'ameena-3', title: 'Simple Daily Wear', price: 1800, description: 'Practical daily wear outfit with comfortable fit and easy maintenance. Great value for money.', brandId: 'ameena', image: `${BRAND_IMAGE_DIR}/ameena/ameena-3.jpg` },
-    { id: 'ameena-4', title: 'Affordable Kurta', price: 2200, description: 'Budget-friendly kurta with decent quality and comfortable fabric. Perfect for everyday use.', brandId: 'ameena', image: `${BRAND_IMAGE_DIR}/ameena/ameena-4.jpg` },
-    { id: 'ameena-5', title: 'Budget Friendly Dress', price: 1900, description: 'Economical dress option with simple design and comfortable material. Ideal for daily activities.', brandId: 'ameena', image: `${BRAND_IMAGE_DIR}/ameena/ameena-5.jpg` },
+    // Saima (Affordable)
+    { id: 'saima-1', title: 'Cotton Summer Lawn', price: 2500, description: 'Affordable cotton lawn perfect for hot summer days. Breathable fabric with attractive prints.', brandId: 'saima', image: `${BRAND_IMAGE_DIR}/saima/saima-1.jpg` },
+    { id: 'saima-2', title: 'Basic Trouser Set', price: 1500, description: 'Simple and comfortable trouser set for everyday wear. Budget-friendly with good quality fabric.', brandId: 'saima', image: `${BRAND_IMAGE_DIR}/saima/saima-2.jpg` },
+    { id: 'saima-3', title: 'Simple Daily Wear', price: 1800, description: 'Practical daily wear outfit with comfortable fit and easy maintenance. Great value for money.', brandId: 'saima', image: `${BRAND_IMAGE_DIR}/saima/saima-3.jpg` },
+    { id: 'saima-4', title: 'Affordable Kurta', price: 2200, description: 'Budget-friendly kurta with decent quality and comfortable fabric. Perfect for everyday use.', brandId: 'saima', image: `${BRAND_IMAGE_DIR}/saima/saima-4.jpg` },
+    { id: 'saima-5', title: 'Budget Friendly Dress', price: 1900, description: 'Economical dress option with simple design and comfortable material. Ideal for daily activities.', brandId: 'saima', image: `${BRAND_IMAGE_DIR}/saima/saima-5.jpg` },
 
     // UIGC Collection (Affordable)
     { id: 'uigc-1', title: 'Everyday Dupatta', price: 1200, description: 'Simple and elegant dupatta for everyday use. Versatile and budget-friendly.', brandId: 'uigc-collection', image: `${BRAND_IMAGE_DIR}/uigc-collection/uigc-1.jpg` },

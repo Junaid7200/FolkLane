@@ -10,6 +10,7 @@ import { scrapeMtf } from '../brands/mtf.scraper'
 import { scrapeCosset } from '../brands/cosset.scraper'
 import { scrapeSobiaNazir } from '../brands/sobiaNazir.scraper'
 import { scrapeUigcCollection } from '../brands/uigcCollection.scraper'
+import { scrapeSaima } from '../brands/saima.scraper'
 import type { BrandScrapeResult, ScrapeOptions } from '../base/types'
 
 function nowIso() {
@@ -67,6 +68,9 @@ async function scrapeByBrand(
   }
   if (brandId === 'uigc-collection') {
     return scrapeUigcCollection(options)
+  }
+  if (brandId === 'saima') {
+    return scrapeSaima(options)
   }
 
   throw new Error(`No scraper implemented for brand: ${brandId}`)

@@ -20,6 +20,7 @@ const SUPPORTED_MANUAL_SCRAPE_BRANDS = [
   'cosset',
   'sobia-nazir',
   'uigc-collection',
+  'saima',
 ] as const
 type SupportedManualScrapeBrand = (typeof SUPPORTED_MANUAL_SCRAPE_BRANDS)[number]
 
