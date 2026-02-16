@@ -1,6 +1,10 @@
 [build]
   command = "vite build"
   dir = "dist/client"
+
+[functions]
+  included_files = ["data/folklane.sqlite"]
+
 [dev]
   command = "npm run dev"
   targetPort = 3000

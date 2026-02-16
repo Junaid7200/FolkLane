@@ -10,6 +10,10 @@ function resolveSqlitePath() {
   return path.resolve(process.cwd(), serverConfig.sqliteFile)
 }
 
+function isNetlifyRuntime() {
+  return Boolean(process.env.NETLIFY)
+}
+
 function ensureDbDirectory(filePath: string) {
   const dir = path.dirname(filePath)
   if (!fs.existsSync(dir)) {
@@ -17,10 +21,33 @@ function ensureDbDirectory(filePath: string) {
   }
 }
 
+function ensureNetlifyRuntimeSnapshot(targetPath: string) {
+  if (!isNetlifyRuntime()) return
+
+  const normalizedTargetPath = path.resolve(targetPath)
+  const tmpRoot = path.resolve('/tmp')
+  const isTmpTarget =
+    normalizedTargetPath === tmpRoot ||
+    normalizedTargetPath.startsWith(`${tmpRoot}${path.sep}`)
+  if (!isTmpTarget) return
+  if (fs.existsSync(normalizedTargetPath)) return
+
+  const bundledSnapshotPath = path.resolve(
+    process.cwd(),
+    'data',
+    'folklane.sqlite',
+  )
+  if (!fs.existsSync(bundledSnapshotPath)) return
+
+  ensureDbDirectory(normalizedTargetPath)
+  fs.copyFileSync(bundledSnapshotPath, normalizedTargetPath)
+}
+
 export function getDatabase(): BetterSqlite3.Database {
   if (db) return db
 
   const filePath = resolveSqlitePath()
+  ensureNetlifyRuntimeSnapshot(filePath)
   ensureDbDirectory(filePath)
 
   db = new BetterSqlite3(filePath)
