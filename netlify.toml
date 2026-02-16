@@ -3,7 +3,7 @@
   dir = "dist/client"
 
 [functions]
-  included_files = ["data/folklane.sqlite"]
+  included_files = ["data/folklane.sqlite", "data/catalog.snapshot.json"]
 
 [dev]
   command = "npm run dev"

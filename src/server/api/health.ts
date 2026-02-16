@@ -1,7 +1,6 @@
+import path from 'node:path'
 import { createServerFn } from '@tanstack/react-start'
 import { serverConfig } from '../config/env'
-import { getDatabaseClientState } from '../db/client'
-import { ensureDatabaseReady } from '../db/init'
 import { isQueueReady } from '../queue/health'
 import { listScrapeSchedulers } from '../queue/scheduler/scrapeScheduler'
 
@@ -27,7 +26,26 @@ export type BackendHealth = {
 export const getBackendHealth = createServerFn({
   method: 'GET',
 }).handler(async (): Promise<BackendHealth> => {
-  await ensureDatabaseReady()
+  let databaseState: BackendHealth['database'] = {
+    provider: 'sqlite',
+    file: path.resolve(process.cwd(), serverConfig.sqliteFile),
+    ready: false,
+  }
+
+  try {
+    const [{ ensureDatabaseReady }, { getDatabaseClientState }] =
+      await Promise.all([import('../db/init'), import('../db/client')])
+    await ensureDatabaseReady()
+    const db = getDatabaseClientState()
+    databaseState = {
+      provider: db.provider,
+      file: db.file,
+      ready: db.ready,
+    }
+  } catch {
+    // Keep degraded DB health instead of failing request.
+  }
+
   const queueReady = await isQueueReady()
   let schedulerCount: number | null = null
   if (queueReady) {
@@ -37,18 +55,13 @@ export const getBackendHealth = createServerFn({
       schedulerCount = null
     }
   }
-  const db = getDatabaseClientState()
 
   return {
     status: 'ok',
     timestamp: new Date().toISOString(),
     service: 'folklane-backend',
     environment: serverConfig.nodeEnv,
-    database: {
-      provider: db.provider,
-      file: db.file,
-      ready: db.ready,
-    },
+    database: databaseState,
     queue: {
       provider: 'bullmq',
       redisUrl: serverConfig.redisUrl,
