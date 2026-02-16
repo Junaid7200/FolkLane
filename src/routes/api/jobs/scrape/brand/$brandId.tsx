@@ -18,6 +18,8 @@ const SUPPORTED_MANUAL_SCRAPE_BRANDS = [
   'mirakk',
   'mtf',
   'cosset',
+  'sobia-nazir',
+  'uigc-collection',
 ] as const
 type SupportedManualScrapeBrand = (typeof SUPPORTED_MANUAL_SCRAPE_BRANDS)[number]
 

@@ -8,6 +8,8 @@ import { scrapeMariaNasir } from '../brands/mariaNasir.scraper'
 import { scrapeMirakk } from '../brands/mirakk.scraper'
 import { scrapeMtf } from '../brands/mtf.scraper'
 import { scrapeCosset } from '../brands/cosset.scraper'
+import { scrapeSobiaNazir } from '../brands/sobiaNazir.scraper'
+import { scrapeUigcCollection } from '../brands/uigcCollection.scraper'
 import type { BrandScrapeResult, ScrapeOptions } from '../base/types'
 
 function nowIso() {
@@ -59,6 +61,12 @@ async function scrapeByBrand(
   }
   if (brandId === 'cosset') {
     return scrapeCosset(options)
+  }
+  if (brandId === 'sobia-nazir') {
+    return scrapeSobiaNazir(options)
+  }
+  if (brandId === 'uigc-collection') {
+    return scrapeUigcCollection(options)
   }
 
   throw new Error(`No scraper implemented for brand: ${brandId}`)
