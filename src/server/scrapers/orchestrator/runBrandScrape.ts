@@ -7,6 +7,7 @@ import { scrapeJindjan } from '../brands/jindjan.scraper'
 import { scrapeMariaNasir } from '../brands/mariaNasir.scraper'
 import { scrapeMirakk } from '../brands/mirakk.scraper'
 import { scrapeMtf } from '../brands/mtf.scraper'
+import { scrapeCosset } from '../brands/cosset.scraper'
 import type { BrandScrapeResult, ScrapeOptions } from '../base/types'
 
 function nowIso() {
@@ -55,6 +56,9 @@ async function scrapeByBrand(
   }
   if (brandId === 'mtf') {
     return scrapeMtf(options)
+  }
+  if (brandId === 'cosset') {
+    return scrapeCosset(options)
   }
 
   throw new Error(`No scraper implemented for brand: ${brandId}`)

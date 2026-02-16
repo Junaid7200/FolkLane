@@ -17,6 +17,7 @@ const SUPPORTED_MANUAL_SCRAPE_BRANDS = [
   'maria-nasir',
   'mirakk',
   'mtf',
+  'cosset',
 ] as const
 type SupportedManualScrapeBrand = (typeof SUPPORTED_MANUAL_SCRAPE_BRANDS)[number]
 
