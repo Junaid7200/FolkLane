@@ -2,7 +2,7 @@ import { Link } from '@tanstack/react-router'
 
 export default function Hero() {
   return (
-    <section className="bg-gradient-to-br from-slate-50 via-white to-stone-100 py-12 sm:py-16 md:py-20">
+    <section className="bg-linear-to-br from-slate-50 via-white to-stone-100 py-12 sm:py-16 md:py-20">
       <div className="container mx-auto px-4 sm:px-6 text-center">
         <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-gray-900 mb-4 sm:mb-6 tracking-tight">
           Pakistan&apos;s Fashion,

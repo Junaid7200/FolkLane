@@ -68,7 +68,7 @@ export default function Slider() {
   }
 
   return (
-    <div className="relative h-[24rem] sm:h-[27rem] md:h-[30rem] bg-slate-900 rounded-2xl overflow-hidden shadow-xl">
+    <div className="relative h-96 sm:h-108 md:h-120 bg-slate-900 rounded-2xl overflow-hidden shadow-xl">
       {slides.map((slide, index) => (
         <div
           key={slide.id}
@@ -81,7 +81,7 @@ export default function Slider() {
             alt={slide.title}
             className="absolute inset-0 w-full h-full object-cover object-top"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-900/55 to-slate-950/35" />
+          <div className="absolute inset-0 bg-linear-to-r from-slate-950/85 via-slate-900/55 to-slate-950/35" />
           <div className="relative h-full container mx-auto px-6 sm:px-10 flex items-center">
             <div className="max-w-xl text-white">
               <p className="uppercase tracking-[0.2em] text-xs sm:text-sm text-amber-300 font-semibold mb-3">
