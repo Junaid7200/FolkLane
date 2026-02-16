@@ -6,8 +6,11 @@ import { ensureDatabaseReady } from '@/server/db/init'
 import {
   createQueuedScrapeRun,
   markScrapeRunFailed,
+  setScrapeRunQueueJobId,
 } from '@/server/db/repositories/scrapeRunsRepo'
 import { enqueueScrapeBrandJob } from '@/server/queue/jobs/scrapeBrand.job'
+
+const MAX_RETRY_ATTEMPTS = 3
 
 export const Route = createFileRoute('/api/jobs/scrape/brand/$brandId')({
   component: () => null,
@@ -36,7 +39,13 @@ export const Route = createFileRoute('/api/jobs/scrape/brand/$brandId')({
         const db = getDatabase()
 
         const runId = randomUUID()
-        createQueuedScrapeRun(db, { id: runId, brandId: params.brandId })
+        createQueuedScrapeRun(db, {
+          id: runId,
+          brandId: params.brandId,
+          triggeredBy: 'manual',
+          queueJobId: null,
+          maxAttempts: MAX_RETRY_ATTEMPTS,
+        })
 
         try {
           const job = await enqueueScrapeBrandJob({
@@ -44,6 +53,7 @@ export const Route = createFileRoute('/api/jobs/scrape/brand/$brandId')({
             brandId: params.brandId,
             triggeredBy: 'manual',
           })
+          setScrapeRunQueueJobId(db, { id: runId, queueJobId: job.id })
 
           return Response.json(
             {
@@ -58,6 +68,7 @@ export const Route = createFileRoute('/api/jobs/scrape/brand/$brandId')({
           markScrapeRunFailed(db, {
             id: runId,
             finishedAt: new Date().toISOString(),
+            attempts: 1,
             errorMessage:
               error instanceof Error ? error.message : 'Failed to enqueue job',
           })

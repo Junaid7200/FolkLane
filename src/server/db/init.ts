@@ -3,6 +3,33 @@ import { seedCatalogIfEmpty } from './seed'
 
 let initPromise: Promise<void> | null = null
 
+function hasColumn(db: ReturnType<typeof getDatabase>, table: string, column: string) {
+  const rows = db.prepare(`PRAGMA table_info(${table})`).all() as Array<{
+    name: string
+  }>
+  return rows.some((row) => row.name === column)
+}
+
+function ensureScrapeRunsColumns(db: ReturnType<typeof getDatabase>) {
+  if (!hasColumn(db, 'scrape_runs', 'triggered_by')) {
+    db.exec(
+      `ALTER TABLE scrape_runs ADD COLUMN triggered_by TEXT NOT NULL DEFAULT 'manual' CHECK (triggered_by IN ('manual', 'schedule'))`,
+    )
+  }
+
+  if (!hasColumn(db, 'scrape_runs', 'queue_job_id')) {
+    db.exec(`ALTER TABLE scrape_runs ADD COLUMN queue_job_id TEXT`)
+  }
+
+  if (!hasColumn(db, 'scrape_runs', 'attempts')) {
+    db.exec(`ALTER TABLE scrape_runs ADD COLUMN attempts INTEGER NOT NULL DEFAULT 0`)
+  }
+
+  if (!hasColumn(db, 'scrape_runs', 'max_attempts')) {
+    db.exec(`ALTER TABLE scrape_runs ADD COLUMN max_attempts INTEGER NOT NULL DEFAULT 1`)
+  }
+}
+
 function initializeSchema() {
   const db = getDatabase()
 
@@ -33,7 +60,11 @@ function initializeSchema() {
     CREATE TABLE IF NOT EXISTS scrape_runs (
       id TEXT PRIMARY KEY,
       brand_id TEXT NOT NULL,
+      triggered_by TEXT NOT NULL CHECK (triggered_by IN ('manual', 'schedule')),
+      queue_job_id TEXT,
       status TEXT NOT NULL CHECK (status IN ('queued', 'running', 'success', 'failed')),
+      attempts INTEGER NOT NULL DEFAULT 0,
+      max_attempts INTEGER NOT NULL DEFAULT 1,
       started_at TEXT,
       finished_at TEXT,
       items_found INTEGER,
@@ -43,6 +74,11 @@ function initializeSchema() {
     CREATE INDEX IF NOT EXISTS idx_products_brand_id ON products(brand_id);
     CREATE INDEX IF NOT EXISTS idx_scrape_runs_brand_id ON scrape_runs(brand_id);
   `)
+
+  ensureScrapeRunsColumns(db)
+  db.exec(
+    `CREATE INDEX IF NOT EXISTS idx_scrape_runs_queue_job_id ON scrape_runs(queue_job_id);`,
+  )
 }
 
 export async function ensureDatabaseReady() {
@@ -55,4 +91,3 @@ export async function ensureDatabaseReady() {
 
   return initPromise
 }
-

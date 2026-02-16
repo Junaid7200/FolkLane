@@ -28,10 +28,13 @@ export type ScrapeRunStatus = 'queued' | 'running' | 'success' | 'failed'
 export type ScrapeRunRow = {
   id: string
   brandId: string
+  triggeredBy: 'manual' | 'schedule'
+  queueJobId: string | null
   status: ScrapeRunStatus
+  attempts: number
+  maxAttempts: number
   startedAt: string | null
   finishedAt: string | null
   itemsFound: number | null
   errorMessage: string | null
 }
-

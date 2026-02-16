@@ -1,6 +1,5 @@
 export type ScrapeBrandJobData = {
-  runId: string
+  runId?: string
   brandId: string
   triggeredBy: 'manual' | 'schedule'
 }
-

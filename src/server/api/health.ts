@@ -3,6 +3,7 @@ import { serverConfig } from '../config/env'
 import { getDatabaseClientState } from '../db/client'
 import { ensureDatabaseReady } from '../db/init'
 import { isQueueReady } from '../queue/health'
+import { listScrapeSchedulers } from '../queue/scheduler/scrapeScheduler'
 
 export type BackendHealth = {
   status: 'ok'
@@ -18,6 +19,8 @@ export type BackendHealth = {
     provider: 'bullmq'
     redisUrl: string
     ready: boolean
+    schedulePattern: string
+    schedulerCount: number | null
   }
 }
 
@@ -26,6 +29,14 @@ export const getBackendHealth = createServerFn({
 }).handler(async (): Promise<BackendHealth> => {
   await ensureDatabaseReady()
   const queueReady = await isQueueReady()
+  let schedulerCount: number | null = null
+  if (queueReady) {
+    try {
+      schedulerCount = (await listScrapeSchedulers()).length
+    } catch {
+      schedulerCount = null
+    }
+  }
   const db = getDatabaseClientState()
 
   return {
@@ -42,6 +53,8 @@ export const getBackendHealth = createServerFn({
       provider: 'bullmq',
       redisUrl: serverConfig.redisUrl,
       ready: queueReady,
+      schedulePattern: serverConfig.scrapeSchedulePattern,
+      schedulerCount,
     },
   }
 })

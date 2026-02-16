@@ -18,6 +18,7 @@ import { Route as CategoryCategoryRouteImport } from './routes/category.$categor
 import { Route as ApiBrandsRouteImport } from './routes/api/brands'
 import { Route as ApiProductsProductIdRouteImport } from './routes/api/products/$productId'
 import { Route as ApiJobsScrapeRunsRouteImport } from './routes/api/jobs/scrape-runs'
+import { Route as ApiJobsSchedulersRouteImport } from './routes/api/jobs/schedulers'
 import { Route as CategoryCategoryBrandBrandRouteImport } from './routes/category_.$category.brand.$brand'
 import { Route as ApiBrandsBrandIdProductsRouteImport } from './routes/api/brands/$brandId/products'
 import { Route as ApiJobsScrapeBrandBrandIdRouteImport } from './routes/api/jobs/scrape/brand/$brandId'
@@ -68,6 +69,11 @@ const ApiJobsScrapeRunsRoute = ApiJobsScrapeRunsRouteImport.update({
   path: '/api/jobs/scrape-runs',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiJobsSchedulersRoute = ApiJobsSchedulersRouteImport.update({
+  id: '/api/jobs/schedulers',
+  path: '/api/jobs/schedulers',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CategoryCategoryBrandBrandRoute =
   CategoryCategoryBrandBrandRouteImport.update({
     id: '/category_/$category/brand/$brand',
@@ -101,6 +107,7 @@ export interface FileRoutesByFullPath {
   '/checkout': typeof CheckoutRoute
   '/api/brands': typeof ApiBrandsRouteWithChildren
   '/category/$category': typeof CategoryCategoryRoute
+  '/api/jobs/schedulers': typeof ApiJobsSchedulersRoute
   '/api/jobs/scrape-runs': typeof ApiJobsScrapeRunsRoute
   '/api/products/$productId': typeof ApiProductsProductIdRoute
   '/api/brands/$brandId/products': typeof ApiBrandsBrandIdProductsRoute
@@ -116,6 +123,7 @@ export interface FileRoutesByTo {
   '/checkout': typeof CheckoutRoute
   '/api/brands': typeof ApiBrandsRouteWithChildren
   '/category/$category': typeof CategoryCategoryRoute
+  '/api/jobs/schedulers': typeof ApiJobsSchedulersRoute
   '/api/jobs/scrape-runs': typeof ApiJobsScrapeRunsRoute
   '/api/products/$productId': typeof ApiProductsProductIdRoute
   '/api/brands/$brandId/products': typeof ApiBrandsBrandIdProductsRoute
@@ -132,6 +140,7 @@ export interface FileRoutesById {
   '/checkout': typeof CheckoutRoute
   '/api/brands': typeof ApiBrandsRouteWithChildren
   '/category/$category': typeof CategoryCategoryRoute
+  '/api/jobs/schedulers': typeof ApiJobsSchedulersRoute
   '/api/jobs/scrape-runs': typeof ApiJobsScrapeRunsRoute
   '/api/products/$productId': typeof ApiProductsProductIdRoute
   '/api/brands/$brandId/products': typeof ApiBrandsBrandIdProductsRoute
@@ -149,6 +158,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/api/brands'
     | '/category/$category'
+    | '/api/jobs/schedulers'
     | '/api/jobs/scrape-runs'
     | '/api/products/$productId'
     | '/api/brands/$brandId/products'
@@ -164,6 +174,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/api/brands'
     | '/category/$category'
+    | '/api/jobs/schedulers'
     | '/api/jobs/scrape-runs'
     | '/api/products/$productId'
     | '/api/brands/$brandId/products'
@@ -179,6 +190,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/api/brands'
     | '/category/$category'
+    | '/api/jobs/schedulers'
     | '/api/jobs/scrape-runs'
     | '/api/products/$productId'
     | '/api/brands/$brandId/products'
@@ -195,6 +207,7 @@ export interface RootRouteChildren {
   CheckoutRoute: typeof CheckoutRoute
   ApiBrandsRoute: typeof ApiBrandsRouteWithChildren
   CategoryCategoryRoute: typeof CategoryCategoryRoute
+  ApiJobsSchedulersRoute: typeof ApiJobsSchedulersRoute
   ApiJobsScrapeRunsRoute: typeof ApiJobsScrapeRunsRoute
   ApiProductsProductIdRoute: typeof ApiProductsProductIdRoute
   CategoryCategoryBrandBrandRoute: typeof CategoryCategoryBrandBrandRoute
@@ -267,6 +280,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiJobsScrapeRunsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/jobs/schedulers': {
+      id: '/api/jobs/schedulers'
+      path: '/api/jobs/schedulers'
+      fullPath: '/api/jobs/schedulers'
+      preLoaderRoute: typeof ApiJobsSchedulersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/category_/$category/brand/$brand': {
       id: '/category_/$category/brand/$brand'
       path: '/category/$category/brand/$brand'
@@ -318,6 +338,7 @@ const rootRouteChildren: RootRouteChildren = {
   CheckoutRoute: CheckoutRoute,
   ApiBrandsRoute: ApiBrandsRouteWithChildren,
   CategoryCategoryRoute: CategoryCategoryRoute,
+  ApiJobsSchedulersRoute: ApiJobsSchedulersRoute,
   ApiJobsScrapeRunsRoute: ApiJobsScrapeRunsRoute,
   ApiProductsProductIdRoute: ApiProductsProductIdRoute,
   CategoryCategoryBrandBrandRoute: CategoryCategoryBrandBrandRoute,
