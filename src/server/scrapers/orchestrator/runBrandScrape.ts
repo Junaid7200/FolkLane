@@ -2,6 +2,7 @@ import { getDatabase } from '../../db/client'
 import { ensureDatabaseReady } from '../../db/init'
 import { replaceProductsByBrand } from '../../db/repositories/productsRepo'
 import type { ProductRow } from '../../db/schema'
+import { scrapeDmCollection } from '../brands/dmCollection.scraper'
 import { scrapeJindjan } from '../brands/jindjan.scraper'
 import type { BrandScrapeResult, ScrapeOptions } from '../base/types'
 
@@ -39,6 +40,9 @@ async function scrapeByBrand(
 ): Promise<BrandScrapeResult> {
   if (brandId === 'jindjan') {
     return scrapeJindjan(options)
+  }
+  if (brandId === 'd-m-collection') {
+    return scrapeDmCollection(options)
   }
 
   throw new Error(`No scraper implemented for brand: ${brandId}`)

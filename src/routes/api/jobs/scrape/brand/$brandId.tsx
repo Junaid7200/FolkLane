@@ -11,17 +11,27 @@ import {
 import { enqueueScrapeBrandJob } from '@/server/queue/jobs/scrapeBrand.job'
 
 const MAX_RETRY_ATTEMPTS = 3
+const SUPPORTED_MANUAL_SCRAPE_BRANDS = ['jindjan', 'd-m-collection'] as const
+type SupportedManualScrapeBrand = (typeof SUPPORTED_MANUAL_SCRAPE_BRANDS)[number]
+
+function isSupportedManualScrapeBrand(
+  brandId: string,
+): brandId is SupportedManualScrapeBrand {
+  return SUPPORTED_MANUAL_SCRAPE_BRANDS.includes(
+    brandId as SupportedManualScrapeBrand,
+  )
+}
 
 export const Route = createFileRoute('/api/jobs/scrape/brand/$brandId')({
   component: () => null,
   server: {
     handlers: {
       POST: async ({ params }) => {
-        if (params.brandId !== 'jindjan') {
+        if (!isSupportedManualScrapeBrand(params.brandId)) {
           return Response.json(
             {
               error: `Scraper not implemented for brand: ${params.brandId}`,
-              supportedBrands: ['jindjan'],
+              supportedBrands: SUPPORTED_MANUAL_SCRAPE_BRANDS,
             },
             { status: 409 },
           )
