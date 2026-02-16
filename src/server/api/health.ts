@@ -2,6 +2,7 @@ import { createServerFn } from '@tanstack/react-start'
 import { serverConfig } from '../config/env'
 import { getDatabaseClientState } from '../db/client'
 import { ensureDatabaseReady } from '../db/init'
+import { isQueueReady } from '../queue/health'
 
 export type BackendHealth = {
   status: 'ok'
@@ -16,7 +17,7 @@ export type BackendHealth = {
   queue: {
     provider: 'bullmq'
     redisUrl: string
-    ready: false
+    ready: boolean
   }
 }
 
@@ -24,6 +25,7 @@ export const getBackendHealth = createServerFn({
   method: 'GET',
 }).handler(async (): Promise<BackendHealth> => {
   await ensureDatabaseReady()
+  const queueReady = await isQueueReady()
   const db = getDatabaseClientState()
 
   return {
@@ -39,7 +41,7 @@ export const getBackendHealth = createServerFn({
     queue: {
       provider: 'bullmq',
       redisUrl: serverConfig.redisUrl,
-      ready: false,
+      ready: queueReady,
     },
   }
 })

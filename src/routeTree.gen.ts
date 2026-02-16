@@ -17,8 +17,10 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as CategoryCategoryRouteImport } from './routes/category.$category'
 import { Route as ApiBrandsRouteImport } from './routes/api/brands'
 import { Route as ApiProductsProductIdRouteImport } from './routes/api/products/$productId'
+import { Route as ApiJobsScrapeRunsRouteImport } from './routes/api/jobs/scrape-runs'
 import { Route as CategoryCategoryBrandBrandRouteImport } from './routes/category_.$category.brand.$brand'
 import { Route as ApiBrandsBrandIdProductsRouteImport } from './routes/api/brands/$brandId/products'
+import { Route as ApiJobsScrapeBrandBrandIdRouteImport } from './routes/api/jobs/scrape/brand/$brandId'
 import { Route as CategoryCategoryBrandBrandItemItemidRouteImport } from './routes/category_/$category/brand_/$brand/item/$itemid'
 
 const CheckoutRoute = CheckoutRouteImport.update({
@@ -61,6 +63,11 @@ const ApiProductsProductIdRoute = ApiProductsProductIdRouteImport.update({
   path: '/api/products/$productId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiJobsScrapeRunsRoute = ApiJobsScrapeRunsRouteImport.update({
+  id: '/api/jobs/scrape-runs',
+  path: '/api/jobs/scrape-runs',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CategoryCategoryBrandBrandRoute =
   CategoryCategoryBrandBrandRouteImport.update({
     id: '/category_/$category/brand/$brand',
@@ -72,6 +79,12 @@ const ApiBrandsBrandIdProductsRoute =
     id: '/$brandId/products',
     path: '/$brandId/products',
     getParentRoute: () => ApiBrandsRoute,
+  } as any)
+const ApiJobsScrapeBrandBrandIdRoute =
+  ApiJobsScrapeBrandBrandIdRouteImport.update({
+    id: '/api/jobs/scrape/brand/$brandId',
+    path: '/api/jobs/scrape/brand/$brandId',
+    getParentRoute: () => rootRouteImport,
   } as any)
 const CategoryCategoryBrandBrandItemItemidRoute =
   CategoryCategoryBrandBrandItemItemidRouteImport.update({
@@ -88,9 +101,11 @@ export interface FileRoutesByFullPath {
   '/checkout': typeof CheckoutRoute
   '/api/brands': typeof ApiBrandsRouteWithChildren
   '/category/$category': typeof CategoryCategoryRoute
+  '/api/jobs/scrape-runs': typeof ApiJobsScrapeRunsRoute
   '/api/products/$productId': typeof ApiProductsProductIdRoute
   '/api/brands/$brandId/products': typeof ApiBrandsBrandIdProductsRoute
   '/category/$category/brand/$brand': typeof CategoryCategoryBrandBrandRoute
+  '/api/jobs/scrape/brand/$brandId': typeof ApiJobsScrapeBrandBrandIdRoute
   '/category/$category/brand/$brand/item/$itemid': typeof CategoryCategoryBrandBrandItemItemidRoute
 }
 export interface FileRoutesByTo {
@@ -101,9 +116,11 @@ export interface FileRoutesByTo {
   '/checkout': typeof CheckoutRoute
   '/api/brands': typeof ApiBrandsRouteWithChildren
   '/category/$category': typeof CategoryCategoryRoute
+  '/api/jobs/scrape-runs': typeof ApiJobsScrapeRunsRoute
   '/api/products/$productId': typeof ApiProductsProductIdRoute
   '/api/brands/$brandId/products': typeof ApiBrandsBrandIdProductsRoute
   '/category/$category/brand/$brand': typeof CategoryCategoryBrandBrandRoute
+  '/api/jobs/scrape/brand/$brandId': typeof ApiJobsScrapeBrandBrandIdRoute
   '/category/$category/brand/$brand/item/$itemid': typeof CategoryCategoryBrandBrandItemItemidRoute
 }
 export interface FileRoutesById {
@@ -115,9 +132,11 @@ export interface FileRoutesById {
   '/checkout': typeof CheckoutRoute
   '/api/brands': typeof ApiBrandsRouteWithChildren
   '/category/$category': typeof CategoryCategoryRoute
+  '/api/jobs/scrape-runs': typeof ApiJobsScrapeRunsRoute
   '/api/products/$productId': typeof ApiProductsProductIdRoute
   '/api/brands/$brandId/products': typeof ApiBrandsBrandIdProductsRoute
   '/category_/$category/brand/$brand': typeof CategoryCategoryBrandBrandRoute
+  '/api/jobs/scrape/brand/$brandId': typeof ApiJobsScrapeBrandBrandIdRoute
   '/category_/$category/brand_/$brand/item/$itemid': typeof CategoryCategoryBrandBrandItemItemidRoute
 }
 export interface FileRouteTypes {
@@ -130,9 +149,11 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/api/brands'
     | '/category/$category'
+    | '/api/jobs/scrape-runs'
     | '/api/products/$productId'
     | '/api/brands/$brandId/products'
     | '/category/$category/brand/$brand'
+    | '/api/jobs/scrape/brand/$brandId'
     | '/category/$category/brand/$brand/item/$itemid'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -143,9 +164,11 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/api/brands'
     | '/category/$category'
+    | '/api/jobs/scrape-runs'
     | '/api/products/$productId'
     | '/api/brands/$brandId/products'
     | '/category/$category/brand/$brand'
+    | '/api/jobs/scrape/brand/$brandId'
     | '/category/$category/brand/$brand/item/$itemid'
   id:
     | '__root__'
@@ -156,9 +179,11 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/api/brands'
     | '/category/$category'
+    | '/api/jobs/scrape-runs'
     | '/api/products/$productId'
     | '/api/brands/$brandId/products'
     | '/category_/$category/brand/$brand'
+    | '/api/jobs/scrape/brand/$brandId'
     | '/category_/$category/brand_/$brand/item/$itemid'
   fileRoutesById: FileRoutesById
 }
@@ -170,8 +195,10 @@ export interface RootRouteChildren {
   CheckoutRoute: typeof CheckoutRoute
   ApiBrandsRoute: typeof ApiBrandsRouteWithChildren
   CategoryCategoryRoute: typeof CategoryCategoryRoute
+  ApiJobsScrapeRunsRoute: typeof ApiJobsScrapeRunsRoute
   ApiProductsProductIdRoute: typeof ApiProductsProductIdRoute
   CategoryCategoryBrandBrandRoute: typeof CategoryCategoryBrandBrandRoute
+  ApiJobsScrapeBrandBrandIdRoute: typeof ApiJobsScrapeBrandBrandIdRoute
   CategoryCategoryBrandBrandItemItemidRoute: typeof CategoryCategoryBrandBrandItemItemidRoute
 }
 
@@ -233,6 +260,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiProductsProductIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/jobs/scrape-runs': {
+      id: '/api/jobs/scrape-runs'
+      path: '/api/jobs/scrape-runs'
+      fullPath: '/api/jobs/scrape-runs'
+      preLoaderRoute: typeof ApiJobsScrapeRunsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/category_/$category/brand/$brand': {
       id: '/category_/$category/brand/$brand'
       path: '/category/$category/brand/$brand'
@@ -246,6 +280,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/api/brands/$brandId/products'
       preLoaderRoute: typeof ApiBrandsBrandIdProductsRouteImport
       parentRoute: typeof ApiBrandsRoute
+    }
+    '/api/jobs/scrape/brand/$brandId': {
+      id: '/api/jobs/scrape/brand/$brandId'
+      path: '/api/jobs/scrape/brand/$brandId'
+      fullPath: '/api/jobs/scrape/brand/$brandId'
+      preLoaderRoute: typeof ApiJobsScrapeBrandBrandIdRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/category_/$category/brand_/$brand/item/$itemid': {
       id: '/category_/$category/brand_/$brand/item/$itemid'
@@ -277,8 +318,10 @@ const rootRouteChildren: RootRouteChildren = {
   CheckoutRoute: CheckoutRoute,
   ApiBrandsRoute: ApiBrandsRouteWithChildren,
   CategoryCategoryRoute: CategoryCategoryRoute,
+  ApiJobsScrapeRunsRoute: ApiJobsScrapeRunsRoute,
   ApiProductsProductIdRoute: ApiProductsProductIdRoute,
   CategoryCategoryBrandBrandRoute: CategoryCategoryBrandBrandRoute,
+  ApiJobsScrapeBrandBrandIdRoute: ApiJobsScrapeBrandBrandIdRoute,
   CategoryCategoryBrandBrandItemItemidRoute:
     CategoryCategoryBrandBrandItemItemidRoute,
 }
