@@ -1,11 +1,24 @@
 type ImagePlaceholderProps = {
   className?: string
   text?: string
+  showSpinner?: boolean
 }
 
-export default function ImagePlaceholder({ className = '', text = 'FolkLane' }: ImagePlaceholderProps) {
+export default function ImagePlaceholder({
+  className = '',
+  text = 'FolkLane',
+  showSpinner = true,
+}: ImagePlaceholderProps) {
   return (
-    <div className={`flex items-center justify-center bg-gradient-to-br from-slate-50 via-stone-50 to-stone-100 ${className}`}>
+    <div
+      className={`relative flex items-center justify-center bg-gradient-to-br from-slate-50 via-stone-50 to-stone-100 ${className}`}
+    >
+      {showSpinner ? (
+        <div
+          className="absolute w-10 h-10 rounded-full border-2 border-slate-300 border-t-slate-600 animate-spin opacity-70"
+          aria-hidden="true"
+        />
+      ) : null}
       <svg
         className="w-1/3 h-1/3 opacity-25"
         viewBox="0 0 24 24"

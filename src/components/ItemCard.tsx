@@ -1,6 +1,5 @@
 import { Link } from '@tanstack/react-router'
-import { useState } from 'react'
-import ImagePlaceholder from './ImagePlaceholder'
+import SmartImage from './SmartImage'
 
 type ItemCardProps = {
   id: string
@@ -12,10 +11,6 @@ type ItemCardProps = {
 }
 
 export default function ItemCard({ id, title, price, image, brand, category }: ItemCardProps) {
-  // Check if image is placeholder path - if so, show placeholder immediately without trying to load
-  const isPlaceholderPath = image === '/placeholder.jpg' || !image
-  const [imageError, setImageError] = useState(isPlaceholderPath)
-
   return (
     <Link
       to="/category/$category/brand/$brand/item/$itemid"
@@ -25,16 +20,12 @@ export default function ItemCard({ id, title, price, image, brand, category }: I
       <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all overflow-hidden transform hover:-translate-y-1 border border-slate-200">
         {/* Image */}
         <div className="aspect-square bg-gray-200 overflow-hidden relative">
-          {!imageError ? (
-            <img
-              src={image}
-              alt={title}
-              className="w-full h-full object-top object-cover group-hover:scale-110 transition-transform duration-300"
-              onError={() => setImageError(true)}
-            />
-          ) : (
-            <ImagePlaceholder className="w-full h-full" />
-          )}
+          <SmartImage
+            src={image}
+            alt={title}
+            placeholderText="Loading"
+            imgClassName="w-full h-full object-top object-cover group-hover:scale-110 transition-transform duration-300"
+          />
         </div>
 
         {/* Content */}
