@@ -103,7 +103,7 @@ export default function Slider() {
 
   return (
     <div
-      className="relative h-[30rem] sm:h-[32rem] md:h-[34rem] bg-slate-900 rounded-2xl overflow-hidden shadow-xl border border-slate-800/50"
+      className="relative h-120 sm:h-128 md:h-136 bg-slate-900 rounded-2xl overflow-hidden shadow-xl border border-slate-800/50"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
@@ -234,7 +234,7 @@ export default function Slider() {
             onClick={() => goToSlide(index)}
             className={`h-2.5 sm:h-3 rounded-full transition-all ${
               index === currentSlide
-                ? 'bg-white w-14 sm:w-[4.5rem]'
+                ? 'bg-white w-14 sm:w-18'
                 : 'bg-white/45 hover:bg-white/75 w-8 sm:w-10'
             }`}
             aria-label={`Go to slide ${index + 1}`}
