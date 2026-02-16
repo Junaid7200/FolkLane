@@ -14,6 +14,16 @@ export const Route = createFileRoute('/api/jobs/scrape/brand/$brandId')({
   server: {
     handlers: {
       POST: async ({ params }) => {
+        if (params.brandId !== 'jindjan') {
+          return Response.json(
+            {
+              error: `Scraper not implemented for brand: ${params.brandId}`,
+              supportedBrands: ['jindjan'],
+            },
+            { status: 409 },
+          )
+        }
+
         const brandExists = await hasBrand(params.brandId)
         if (!brandExists) {
           return Response.json(
@@ -64,4 +74,3 @@ export const Route = createFileRoute('/api/jobs/scrape/brand/$brandId')({
     },
   },
 })
-

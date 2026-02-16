@@ -1,4 +1,4 @@
-import { getAllBrands, getAllItems, isCategory } from '@/data/catalog'
+import { getAllBrands, getAllItems, isCategory } from '../../data/catalog'
 import { getDatabase } from './client'
 import { countBrands, upsertBrands } from './repositories/brandsRepo'
 import { countProducts, upsertProducts } from './repositories/productsRepo'
@@ -55,4 +55,3 @@ export async function seedCatalogIfEmpty() {
   upsertProducts(db, normalizeProducts(products))
   return true
 }
-

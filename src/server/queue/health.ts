@@ -1,6 +1,6 @@
 export async function isQueueReady() {
   const net = await import('node:net')
-  const { serverConfig } = await import('@/server/config/env')
+  const { serverConfig } = await import('../config/env')
 
   return await new Promise<boolean>((resolve) => {
     const url = new URL(serverConfig.redisUrl)

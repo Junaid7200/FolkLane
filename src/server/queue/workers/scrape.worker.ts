@@ -1,12 +1,12 @@
 import { Worker } from 'bullmq'
 import { getDatabase } from '../../db/client'
 import { ensureDatabaseReady } from '../../db/init'
-import { findProductsByBrand } from '../../db/repositories/productsRepo'
 import {
   markScrapeRunFailed,
   markScrapeRunRunning,
   markScrapeRunSuccess,
 } from '../../db/repositories/scrapeRunsRepo'
+import { runBrandScrape } from '../../scrapers/orchestrator/runBrandScrape'
 import { SCRAPE_QUEUE_NAME } from '../constants'
 import { getRedisConnectionOptions } from '../redis'
 import type { ScrapeBrandJobData } from '../types'
@@ -25,9 +25,11 @@ async function processJob(data: ScrapeBrandJobData) {
   })
 
   try {
-    // Checkpoint 3 worker behavior:
-    // validate queue and run lifecycle with a deterministic, DB-based count.
-    const itemsFound = findProductsByBrand(db, data.brandId).length
+    const scrapeResult = await runBrandScrape(data.brandId, {
+      maxProducts: 100,
+      maxPages: 20,
+    })
+    const itemsFound = scrapeResult.storedCount
 
     markScrapeRunSuccess(db, {
       id: data.runId,

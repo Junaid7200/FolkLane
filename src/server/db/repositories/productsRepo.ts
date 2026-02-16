@@ -124,3 +124,48 @@ export function upsertProducts(
   tx(products)
 }
 
+export function deleteProductsByBrand(
+  db: BetterSqlite3.Database,
+  brandId: string,
+) {
+  db.prepare('DELETE FROM products WHERE brand_id = ?').run(brandId)
+}
+
+export function replaceProductsByBrand(
+  db: BetterSqlite3.Database,
+  brandId: string,
+  products: ProductRow[],
+) {
+  const insertStmt = db.prepare(`
+    INSERT INTO products (
+      id, brand_id, title, description, price, image, images_json, source_url, last_scraped_at, created_at, updated_at
+    )
+    VALUES (
+      @id, @brandId, @title, @description, @price, @image, @imagesJson, @sourceUrl, @lastScrapedAt, @createdAt, @updatedAt
+    )
+  `)
+
+  const tx = db.transaction((rows: ProductRow[]) => {
+    db.prepare('DELETE FROM products WHERE brand_id = ?').run(brandId)
+
+    for (const row of rows) {
+      insertStmt.run({
+        id: row.id,
+        brandId: row.brandId,
+        title: row.title,
+        description: row.description,
+        price: row.price,
+        image: row.image,
+        imagesJson: JSON.stringify(
+          row.images && row.images.length > 0 ? row.images : [row.image],
+        ),
+        sourceUrl: row.sourceUrl,
+        lastScrapedAt: row.lastScrapedAt,
+        createdAt: row.createdAt,
+        updatedAt: row.updatedAt,
+      })
+    }
+  })
+
+  tx(products)
+}

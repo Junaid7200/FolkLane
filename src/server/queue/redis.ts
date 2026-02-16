@@ -1,5 +1,5 @@
 import type { ConnectionOptions } from 'bullmq'
-import { serverConfig } from '@/server/config/env'
+import { serverConfig } from '../config/env'
 
 export function getRedisConnectionOptions(): ConnectionOptions {
   const url = new URL(serverConfig.redisUrl)
@@ -16,4 +16,3 @@ export function getRedisConnectionOptions(): ConnectionOptions {
     enableReadyCheck: false,
   }
 }
-
