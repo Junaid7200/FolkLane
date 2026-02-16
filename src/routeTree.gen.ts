@@ -11,10 +11,14 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as CartRouteImport } from './routes/cart'
+import { Route as BackendHealthRouteImport } from './routes/backend-health'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CategoryCategoryRouteImport } from './routes/category.$category'
+import { Route as ApiBrandsRouteImport } from './routes/api/brands'
+import { Route as ApiProductsProductIdRouteImport } from './routes/api/products/$productId'
 import { Route as CategoryCategoryBrandBrandRouteImport } from './routes/category_.$category.brand.$brand'
+import { Route as ApiBrandsBrandIdProductsRouteImport } from './routes/api/brands/$brandId/products'
 import { Route as CategoryCategoryBrandBrandItemItemidRouteImport } from './routes/category_/$category/brand_/$brand/item/$itemid'
 
 const CheckoutRoute = CheckoutRouteImport.update({
@@ -25,6 +29,11 @@ const CheckoutRoute = CheckoutRouteImport.update({
 const CartRoute = CartRouteImport.update({
   id: '/cart',
   path: '/cart',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BackendHealthRoute = BackendHealthRouteImport.update({
+  id: '/backend-health',
+  path: '/backend-health',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -42,11 +51,27 @@ const CategoryCategoryRoute = CategoryCategoryRouteImport.update({
   path: '/category/$category',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiBrandsRoute = ApiBrandsRouteImport.update({
+  id: '/api/brands',
+  path: '/api/brands',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiProductsProductIdRoute = ApiProductsProductIdRouteImport.update({
+  id: '/api/products/$productId',
+  path: '/api/products/$productId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CategoryCategoryBrandBrandRoute =
   CategoryCategoryBrandBrandRouteImport.update({
     id: '/category_/$category/brand/$brand',
     path: '/category/$category/brand/$brand',
     getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiBrandsBrandIdProductsRoute =
+  ApiBrandsBrandIdProductsRouteImport.update({
+    id: '/$brandId/products',
+    path: '/$brandId/products',
+    getParentRoute: () => ApiBrandsRoute,
   } as any)
 const CategoryCategoryBrandBrandItemItemidRoute =
   CategoryCategoryBrandBrandItemItemidRouteImport.update({
@@ -58,18 +83,26 @@ const CategoryCategoryBrandBrandItemItemidRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/backend-health': typeof BackendHealthRoute
   '/cart': typeof CartRoute
   '/checkout': typeof CheckoutRoute
+  '/api/brands': typeof ApiBrandsRouteWithChildren
   '/category/$category': typeof CategoryCategoryRoute
+  '/api/products/$productId': typeof ApiProductsProductIdRoute
+  '/api/brands/$brandId/products': typeof ApiBrandsBrandIdProductsRoute
   '/category/$category/brand/$brand': typeof CategoryCategoryBrandBrandRoute
   '/category/$category/brand/$brand/item/$itemid': typeof CategoryCategoryBrandBrandItemItemidRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/backend-health': typeof BackendHealthRoute
   '/cart': typeof CartRoute
   '/checkout': typeof CheckoutRoute
+  '/api/brands': typeof ApiBrandsRouteWithChildren
   '/category/$category': typeof CategoryCategoryRoute
+  '/api/products/$productId': typeof ApiProductsProductIdRoute
+  '/api/brands/$brandId/products': typeof ApiBrandsBrandIdProductsRoute
   '/category/$category/brand/$brand': typeof CategoryCategoryBrandBrandRoute
   '/category/$category/brand/$brand/item/$itemid': typeof CategoryCategoryBrandBrandItemItemidRoute
 }
@@ -77,9 +110,13 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/backend-health': typeof BackendHealthRoute
   '/cart': typeof CartRoute
   '/checkout': typeof CheckoutRoute
+  '/api/brands': typeof ApiBrandsRouteWithChildren
   '/category/$category': typeof CategoryCategoryRoute
+  '/api/products/$productId': typeof ApiProductsProductIdRoute
+  '/api/brands/$brandId/products': typeof ApiBrandsBrandIdProductsRoute
   '/category_/$category/brand/$brand': typeof CategoryCategoryBrandBrandRoute
   '/category_/$category/brand_/$brand/item/$itemid': typeof CategoryCategoryBrandBrandItemItemidRoute
 }
@@ -88,27 +125,39 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/backend-health'
     | '/cart'
     | '/checkout'
+    | '/api/brands'
     | '/category/$category'
+    | '/api/products/$productId'
+    | '/api/brands/$brandId/products'
     | '/category/$category/brand/$brand'
     | '/category/$category/brand/$brand/item/$itemid'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
+    | '/backend-health'
     | '/cart'
     | '/checkout'
+    | '/api/brands'
     | '/category/$category'
+    | '/api/products/$productId'
+    | '/api/brands/$brandId/products'
     | '/category/$category/brand/$brand'
     | '/category/$category/brand/$brand/item/$itemid'
   id:
     | '__root__'
     | '/'
     | '/about'
+    | '/backend-health'
     | '/cart'
     | '/checkout'
+    | '/api/brands'
     | '/category/$category'
+    | '/api/products/$productId'
+    | '/api/brands/$brandId/products'
     | '/category_/$category/brand/$brand'
     | '/category_/$category/brand_/$brand/item/$itemid'
   fileRoutesById: FileRoutesById
@@ -116,9 +165,12 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  BackendHealthRoute: typeof BackendHealthRoute
   CartRoute: typeof CartRoute
   CheckoutRoute: typeof CheckoutRoute
+  ApiBrandsRoute: typeof ApiBrandsRouteWithChildren
   CategoryCategoryRoute: typeof CategoryCategoryRoute
+  ApiProductsProductIdRoute: typeof ApiProductsProductIdRoute
   CategoryCategoryBrandBrandRoute: typeof CategoryCategoryBrandBrandRoute
   CategoryCategoryBrandBrandItemItemidRoute: typeof CategoryCategoryBrandBrandItemItemidRoute
 }
@@ -137,6 +189,13 @@ declare module '@tanstack/react-router' {
       path: '/cart'
       fullPath: '/cart'
       preLoaderRoute: typeof CartRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/backend-health': {
+      id: '/backend-health'
+      path: '/backend-health'
+      fullPath: '/backend-health'
+      preLoaderRoute: typeof BackendHealthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -160,12 +219,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CategoryCategoryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/brands': {
+      id: '/api/brands'
+      path: '/api/brands'
+      fullPath: '/api/brands'
+      preLoaderRoute: typeof ApiBrandsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/products/$productId': {
+      id: '/api/products/$productId'
+      path: '/api/products/$productId'
+      fullPath: '/api/products/$productId'
+      preLoaderRoute: typeof ApiProductsProductIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/category_/$category/brand/$brand': {
       id: '/category_/$category/brand/$brand'
       path: '/category/$category/brand/$brand'
       fullPath: '/category/$category/brand/$brand'
       preLoaderRoute: typeof CategoryCategoryBrandBrandRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/api/brands/$brandId/products': {
+      id: '/api/brands/$brandId/products'
+      path: '/$brandId/products'
+      fullPath: '/api/brands/$brandId/products'
+      preLoaderRoute: typeof ApiBrandsBrandIdProductsRouteImport
+      parentRoute: typeof ApiBrandsRoute
     }
     '/category_/$category/brand_/$brand/item/$itemid': {
       id: '/category_/$category/brand_/$brand/item/$itemid'
@@ -177,12 +257,27 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface ApiBrandsRouteChildren {
+  ApiBrandsBrandIdProductsRoute: typeof ApiBrandsBrandIdProductsRoute
+}
+
+const ApiBrandsRouteChildren: ApiBrandsRouteChildren = {
+  ApiBrandsBrandIdProductsRoute: ApiBrandsBrandIdProductsRoute,
+}
+
+const ApiBrandsRouteWithChildren = ApiBrandsRoute._addFileChildren(
+  ApiBrandsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  BackendHealthRoute: BackendHealthRoute,
   CartRoute: CartRoute,
   CheckoutRoute: CheckoutRoute,
+  ApiBrandsRoute: ApiBrandsRouteWithChildren,
   CategoryCategoryRoute: CategoryCategoryRoute,
+  ApiProductsProductIdRoute: ApiProductsProductIdRoute,
   CategoryCategoryBrandBrandRoute: CategoryCategoryBrandBrandRoute,
   CategoryCategoryBrandBrandItemItemidRoute:
     CategoryCategoryBrandBrandItemItemidRoute,
