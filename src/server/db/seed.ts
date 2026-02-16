@@ -1,4 +1,4 @@
-import { getAllBrands, getAllItems, isCategory } from '../../data/catalog'
+import { getLocalBrands, getLocalItems, isCategory } from '../../data/catalog'
 import { getDatabase } from './client'
 import { countBrands, upsertBrands } from './repositories/brandsRepo'
 import { countProducts, upsertProducts } from './repositories/productsRepo'
@@ -8,7 +8,7 @@ function nowIso() {
   return new Date().toISOString()
 }
 
-function normalizeBrands(rows: Awaited<ReturnType<typeof getAllBrands>>): BrandRow[] {
+function normalizeBrands(rows: ReturnType<typeof getLocalBrands>): BrandRow[] {
   const now = nowIso()
   return rows
     .filter((brand) => isCategory(brand.category))
@@ -23,7 +23,7 @@ function normalizeBrands(rows: Awaited<ReturnType<typeof getAllBrands>>): BrandR
 }
 
 function normalizeProducts(
-  rows: Awaited<ReturnType<typeof getAllItems>>,
+  rows: ReturnType<typeof getLocalItems>,
 ): ProductRow[] {
   const now = nowIso()
   return rows.map((item) => ({
@@ -49,7 +49,7 @@ export async function seedCatalogIfEmpty() {
 
   if (!shouldSeed) return false
 
-  const [brands, products] = await Promise.all([getAllBrands(), getAllItems()])
+  const [brands, products] = [getLocalBrands(), getLocalItems()]
 
   upsertBrands(db, normalizeBrands(brands))
   upsertProducts(db, normalizeProducts(products))

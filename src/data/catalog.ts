@@ -23,6 +23,23 @@ export type CatalogData = {
   items: Item[]
 }
 
+type ApiBrand = {
+  id: string
+  name: string
+  category: string
+  description?: string
+}
+
+type ApiProduct = {
+  id: string
+  title: string
+  description: string
+  price: number
+  brandId: string
+  image: string
+  images?: string[]
+}
+
 const PLACEHOLDER_IMAGE = '/placeholder.jpg'
 const BRAND_IMAGE_DIR = '/brands'
 
@@ -138,18 +155,112 @@ localCatalog.items = withFallbackImage(localCatalog.items)
 
 type CatalogSource = 'local' | 'api'
 
-const catalogSource: CatalogSource = 'local'
+const catalogSource: CatalogSource = 'api'
+const API_CACHE_TTL_MS = 15_000
+
+let apiCatalogCache: {
+  data: CatalogData
+  cachedAt: number
+} | null = null
+
+function getApiBaseUrl() {
+  if (typeof window !== 'undefined') return ''
+  const fromEnv =
+    process.env.PUBLIC_SITE_URL || process.env.URL || process.env.SITE_URL
+  if (fromEnv && fromEnv.length > 0) return fromEnv.replace(/\/+$/, '')
+  return 'http://localhost:3000'
+}
+
+async function fetchJson<T>(path: string): Promise<T> {
+  const response = await fetch(`${getApiBaseUrl()}${path}`)
+  if (!response.ok) {
+    const payload = await response.text()
+    throw new Error(`Request failed (${response.status}) for ${path}: ${payload}`)
+  }
+  return response.json() as Promise<T>
+}
+
+function normalizeApiBrands(rows: ApiBrand[]): Brand[] {
+  const hasSupportedCategory = (
+    row: ApiBrand,
+  ): row is ApiBrand & { category: CategoryId } => isCategory(row.category)
+
+  return rows
+    .filter(hasSupportedCategory)
+    .map((row) => ({
+      id: row.id,
+      name: row.name,
+      category: row.category,
+      description: row.description,
+    }))
+}
+
+function normalizeApiItems(rows: ApiProduct[]): Item[] {
+  return withFallbackImage(
+    rows.map((row) => ({
+      id: row.id,
+      title: row.title,
+      description: row.description || '',
+      price: row.price,
+      brandId: row.brandId,
+      image: row.image,
+      images: row.images,
+    })),
+  )
+}
 
 async function getCatalogFromApi(): Promise<CatalogData> {
-  // Placeholder for future FastAPI integration.
-  return localCatalog
+  const now = Date.now()
+  if (apiCatalogCache && now - apiCatalogCache.cachedAt < API_CACHE_TTL_MS) {
+    return apiCatalogCache.data
+  }
+
+  const brandsResponse = await fetchJson<ApiBrand[]>('/api/brands')
+  const brands = normalizeApiBrands(brandsResponse)
+  const productsByBrand = await Promise.all(
+    brands.map(async (brand) => {
+      const rows = await fetchJson<ApiProduct[]>(
+        `/api/brands/${encodeURIComponent(brand.id)}/products`,
+      )
+      return normalizeApiItems(rows)
+    }),
+  )
+
+  const data: CatalogData = {
+    categories: localCatalog.categories,
+    brands,
+    items: productsByBrand.flat(),
+  }
+  apiCatalogCache = {
+    data,
+    cachedAt: now,
+  }
+
+  return data
 }
 
 async function getCatalog(): Promise<CatalogData> {
-  if (catalogSource === 'api') {
-    return getCatalogFromApi()
+  if (catalogSource === 'local') return localCatalog
+
+  try {
+    return await getCatalogFromApi()
+  } catch (error) {
+    const detail = error instanceof Error ? error.message : String(error)
+    console.warn(`[catalog] Falling back to local catalog. API source failed: ${detail}`)
+    return localCatalog
   }
+}
+
+export function getLocalCatalog(): CatalogData {
   return localCatalog
+}
+
+export function getLocalBrands(): Brand[] {
+  return localCatalog.brands
+}
+
+export function getLocalItems(): Item[] {
+  return localCatalog.items
 }
 
 export async function getBrandsByCategory(category: CategoryId) {

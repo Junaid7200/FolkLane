@@ -2,7 +2,9 @@ import { load } from 'cheerio'
 import type { BrandScrapeResult, ScrapeOptions, ScrapedProduct } from '../base/types'
 import {
   absoluteUrl,
+  dedupeImageUrls,
   dedupeStrings,
+  fetchJson,
   fetchText,
   normalizeWhitespace,
   parsePriceToRupees,
@@ -13,6 +15,13 @@ import {
 const BRAND_ID = 'jindjan'
 const BASE_URL = 'https://jindjan.com'
 const COLLECTION_URL = `${BASE_URL}/collections/frontpage`
+
+type ShopifyProductJson = {
+  images?: string[]
+  featured_image?: string | null
+}
+
+const IMAGE_FILE_PATTERN = /\.(jpg|jpeg|png|webp|avif|gif)(\?|$)/i
 
 function getListingPageUrl(page: number) {
   const url = new URL(COLLECTION_URL)
@@ -88,6 +97,131 @@ function parseJsonLdProductImages($: ReturnType<typeof load>): string[] {
   return dedupeStrings(collected)
 }
 
+function extractUrlsFromSet(value: string): string[] {
+  return value
+    .split(',')
+    .map((part) => part.trim().split(/\s+/)[0] || '')
+    .filter((item) => item.length > 0)
+}
+
+function extractUrlsFromStyle(styleValue: string): string[] {
+  const urls: string[] = []
+  const pattern = /url\((['"]?)(.*?)\1\)/gi
+  let match: RegExpExecArray | null = pattern.exec(styleValue)
+
+  while (match) {
+    const candidate = match[2]?.trim()
+    if (candidate) urls.push(candidate)
+    match = pattern.exec(styleValue)
+  }
+
+  return urls
+}
+
+function toAbsoluteImageUrl(href: string): string | null {
+  try {
+    return absoluteUrl(BASE_URL, href)
+  } catch {
+    return null
+  }
+}
+
+function isLikelyProductImage(url: string): boolean {
+  const value = url.toLowerCase()
+  return value.includes('/cdn/shop/files/') && IMAGE_FILE_PATTERN.test(value)
+}
+
+function isPreferredShopifyImage(url: string): boolean {
+  try {
+    const parsed = new URL(url)
+    const host = parsed.hostname.toLowerCase()
+    return host === 'cdn.shopify.com' && parsed.pathname.includes('/s/files/')
+  } catch {
+    return false
+  }
+}
+
+function isLowQualityPlaceholderImage(url: string): boolean {
+  return /_1x1(?=\.[a-z0-9]+(?:\?|$))/i.test(url)
+}
+
+function sanitizeGalleryImages(images: string[]): string[] {
+  const normalized = dedupeImageUrls(images)
+  const withoutPlaceholders = normalized.filter(
+    (image) => !isLowQualityPlaceholderImage(image),
+  )
+  if (withoutPlaceholders.length === 0) return normalized
+
+  const preferred = withoutPlaceholders.filter(isPreferredShopifyImage)
+  if (preferred.length > 0) {
+    return dedupeImageUrls(preferred)
+  }
+
+  return dedupeImageUrls(withoutPlaceholders)
+}
+
+function parseDomGalleryImages($: ReturnType<typeof load>): string[] {
+  const rawValues: string[] = []
+
+  const collectFromElement = (element: unknown) => {
+    const el = $(element)
+    const attrs = [
+      el.attr('data-bgset'),
+      el.attr('srcset'),
+      el.attr('src'),
+      el.attr('data-src'),
+      el.attr('data-master'),
+      el.attr('data-zoom'),
+      el.attr('href'),
+      el.attr('style'),
+    ]
+    for (const attr of attrs) {
+      if (attr && attr.trim().length > 0) rawValues.push(attr.trim())
+    }
+  }
+
+  $('.js-sl-item, .p-nav .n-item, .flickity-slider .n-item').each((_, element) => {
+    collectFromElement(element)
+    $(element)
+      .find('[data-bgset], [srcset], [src], [data-src], [href], [style]')
+      .each((__, child) => collectFromElement(child))
+  })
+
+  if (rawValues.length === 0) {
+    $('[data-bgset], [srcset], img[src*="/cdn/shop/files/"]').each(
+      (_, element) => {
+        collectFromElement(element)
+      },
+    )
+  }
+
+  const candidates: string[] = []
+  for (const value of rawValues) {
+    if (value.includes('url(')) {
+      candidates.push(...extractUrlsFromStyle(value))
+      continue
+    }
+
+    if (
+      value.includes(',') ||
+      /\s\d+w\b/.test(value) ||
+      /\s\d+x\b/.test(value)
+    ) {
+      candidates.push(...extractUrlsFromSet(value))
+      continue
+    }
+
+    candidates.push(value)
+  }
+
+  const normalized = candidates
+    .map((candidate) => toAbsoluteImageUrl(candidate))
+    .filter((value): value is string => Boolean(value))
+    .filter(isLikelyProductImage)
+
+  return dedupeImageUrls(normalized)
+}
+
 function parsePriceFromJsonLd($: ReturnType<typeof load>): number | null {
   let parsedPrice: number | null = null
 
@@ -120,7 +254,8 @@ function parsePriceFromJsonLd($: ReturnType<typeof load>): number | null {
             parsedPrice = parsePriceToRupees(priceValue)
             if (parsedPrice !== null) return
           } else if (typeof priceValue === 'number') {
-            parsedPrice = Math.round(priceValue)
+            const rounded = Math.round(priceValue)
+            parsedPrice = rounded > 0 ? rounded : null
             return
           }
         }
@@ -133,7 +268,33 @@ function parsePriceFromJsonLd($: ReturnType<typeof load>): number | null {
   return parsedPrice
 }
 
-function parseProduct(html: string, sourceUrl: string): ScrapedProduct | null {
+function getShopifyProductJsonUrl(handle: string) {
+  return `${BASE_URL}/products/${encodeURIComponent(handle)}.js`
+}
+
+async function fetchShopifyProductImages(handle: string): Promise<string[]> {
+  const payload = await fetchJson<ShopifyProductJson>(getShopifyProductJsonUrl(handle))
+  const values: string[] = []
+
+  if (Array.isArray(payload.images)) {
+    for (const image of payload.images) {
+      if (typeof image === 'string') {
+        values.push(absoluteUrl(BASE_URL, image))
+      }
+    }
+  }
+
+  if (typeof payload.featured_image === 'string') {
+    values.push(absoluteUrl(BASE_URL, payload.featured_image))
+  }
+
+  return dedupeImageUrls(values)
+}
+
+async function parseProduct(
+  html: string,
+  sourceUrl: string,
+): Promise<ScrapedProduct | null> {
   const $ = load(html)
 
   const handle = productHandleFromUrl(sourceUrl)
@@ -160,11 +321,21 @@ function parseProduct(html: string, sourceUrl: string): ScrapedProduct | null {
   )
   const fallbackPrice = parsePriceToRupees(textPrice)
   const price = jsonLdPrice ?? fallbackPrice
-  if (price === null) return null
+  if (price === null || price <= 0) return null
 
+  let shopifyImages: string[] = []
+  try {
+    shopifyImages = await fetchShopifyProductImages(handle)
+  } catch {
+    // Keep HTML extraction as fallback when JSON endpoint is unavailable.
+  }
+
+  const domGalleryImages = parseDomGalleryImages($)
   const jsonLdImages = parseJsonLdProductImages($)
   const ogImage = $('meta[property="og:image"]').attr('content')
-  const galleryImages = dedupeStrings([
+  const galleryImages = sanitizeGalleryImages([
+    ...shopifyImages,
+    ...domGalleryImages,
     ...jsonLdImages,
     ...(ogImage ? [absoluteUrl(BASE_URL, ogImage)] : []),
   ])
@@ -221,7 +392,7 @@ export async function scrapeJindjan(
   for (const productUrl of productUrls) {
     try {
       const html = await fetchText(productUrl)
-      const item = parseProduct(html, productUrl)
+      const item = await parseProduct(html, productUrl)
       if (!item) continue
       items.push(item)
       if (items.length >= opts.maxProducts) break
@@ -235,4 +406,3 @@ export async function scrapeJindjan(
     items,
   }
 }
-
