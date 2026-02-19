@@ -8,6 +8,7 @@ import {
   normalizeWhitespace,
   productHandleFromUrl,
   safeProductId,
+  sanitizeHtml,
 } from '../base/utils'
 
 const BRAND_ID = 'sobia-nazir'
@@ -91,11 +92,9 @@ function parsePrice(data: ShopifyProductJson): number | null {
 }
 
 function parseDescription(data: ShopifyProductJson): string {
-  const cleaned = normalizeWhitespace(data.body_html || data.description || '')
-  if (!cleaned) return ''
-
-  const $ = load(`<div>${cleaned}</div>`)
-  return normalizeWhitespace($.text())
+  const html = data.body_html || data.description || ''
+  if (!html) return ''
+  return sanitizeHtml(html)
 }
 
 function parseImages(data: ShopifyProductJson): Array<string> {

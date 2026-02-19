@@ -8,6 +8,7 @@ import {
   normalizeWhitespace,
   productHandleFromUrl,
   safeProductId,
+  sanitizeHtml,
 } from '../base/utils'
 
 const BRAND_ID = 'uigc-collection'
@@ -175,6 +176,19 @@ function parseDescription($: ReturnType<typeof load>, fallbackTitle: string): st
     '[itemprop="description"]',
   ]
 
+  // Try to get HTML content first to preserve formatting
+  for (const selector of selectors) {
+    const element = $(selector).first()
+    const html = element.html()
+    if (html && html.length > 0) {
+      const sanitized = sanitizeHtml(html)
+      if (sanitized.length >= 40) {
+        return sanitized
+      }
+    }
+  }
+
+  // Fallback to text extraction if HTML is too short
   for (const selector of selectors) {
     $(selector).each((_, element) => {
       const text = normalizeWhitespace($(element).text())

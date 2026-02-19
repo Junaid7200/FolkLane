@@ -118,9 +118,10 @@ export default function ItemDetail({
           <div className="text-2xl sm:text-3xl font-bold text-slate-900 mb-6 sm:mb-8">
             Rs. {price.toLocaleString()}
           </div>
-          <p className="text-base sm:text-lg text-gray-700 leading-relaxed mb-8">
-            {description}
-          </p>
+          <div
+            className="text-base sm:text-lg text-gray-700 leading-relaxed mb-8 prose prose-slate max-w-none prose-p:my-3 prose-ul:my-3 prose-li:my-1"
+            dangerouslySetInnerHTML={{ __html: description }}
+          />
           <button
             onClick={handleAddToCart}
             disabled={!canAdd}

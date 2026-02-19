@@ -11,11 +11,13 @@ function nowIso() {
 function normalizeBrands(rows: ReturnType<typeof getLocalBrands>): BrandRow[] {
   const now = nowIso()
   return rows
-    .filter((brand) => isCategory(brand.category))
+    .filter((brand) => Array.isArray(brand.categories) && brand.categories.length > 0)
+    .filter((brand) => brand.categories.every(isCategory))
     .map((brand) => ({
       id: brand.id,
       name: brand.name,
       category: brand.category,
+      categories: brand.categories,
       description: brand.description || null,
       createdAt: now,
       updatedAt: now,

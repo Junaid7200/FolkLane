@@ -10,6 +10,7 @@ import {
   fetchText,
   normalizeWhitespace,
   safeProductId,
+  sanitizeHtml,
 } from '../base/utils'
 
 const BRAND_ID = 'mtf'
@@ -83,12 +84,9 @@ function parsePrice(product: ShopifyCollectionProduct): number | null {
 }
 
 function parseDescription(product: ShopifyCollectionProduct): string {
-  const html = normalizeWhitespace(product.body_html || '')
+  const html = product.body_html || ''
   if (!html) return ''
-
-  const $ = load(`<div>${html}</div>`)
-  const text = normalizeWhitespace($.text())
-  return text
+  return sanitizeHtml(html)
 }
 
 function parseImages(product: ShopifyCollectionProduct): Array<string> {

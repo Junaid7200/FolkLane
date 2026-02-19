@@ -6,6 +6,7 @@ import {
   fetchJson,
   normalizeWhitespace,
   safeProductId,
+  sanitizeHtml,
 } from '../base/utils'
 
 const BRAND_ID = 'khalid-rashid-fabrics'
@@ -78,12 +79,11 @@ function parsePrice(product: CollectionProduct): number | null {
 }
 
 function parseDescription(product: CollectionProduct, fallbackTitle: string): string {
-  const html = normalizeWhitespace(product.body_html || '')
+  const html = product.body_html || ''
   if (!html) return fallbackTitle
-
-  const $ = load(`<div>${html}</div>`)
-  const text = normalizeWhitespace($.text())
-  return text || fallbackTitle
+  
+  const sanitized = sanitizeHtml(html)
+  return sanitized || fallbackTitle
 }
 
 function parseImages(product: CollectionProduct): Array<string> {

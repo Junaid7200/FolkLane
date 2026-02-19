@@ -52,6 +52,51 @@ export function normalizeWhitespace(value: string) {
   return value.replace(/\s+/g, ' ').trim()
 }
 
+/**
+ * Sanitize HTML to preserve basic formatting while removing dangerous tags
+ * Keeps: paragraphs, line breaks, lists, bold, italic, links
+ * Removes: scripts, styles, iframes, and other potentially harmful elements
+ */
+export function sanitizeHtml(html: string): string {
+  if (!html) return ''
+
+  // Remove script and style tags and their contents
+  let cleaned = html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+  cleaned = cleaned.replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
+  
+  // Remove dangerous tags
+  cleaned = cleaned.replace(/<(iframe|object|embed|form|input|button)[^>]*>.*?<\/\1>/gi, '')
+  cleaned = cleaned.replace(/<(iframe|object|embed|form|input|button)[^>]*>/gi, '')
+  
+  // Remove event handlers and javascript: links
+  cleaned = cleaned.replace(/\s*on\w+\s*=\s*["'][^"']*["']/gi, '')
+  cleaned = cleaned.replace(/\s*on\w+\s*=\s*[^\s>]*/gi, '')
+  cleaned = cleaned.replace(/href\s*=\s*["']javascript:[^"']*["']/gi, '')
+  
+  // Normalize whitespace within tags but preserve intentional breaks
+  cleaned = cleaned.replace(/>\s+</g, '><')
+  
+  // Convert <br> and <br/> to a consistent format
+  cleaned = cleaned.replace(/<br\s*\/?>/gi, '<br>')
+  
+  return cleaned.trim()
+}
+
+/**
+ * Extract formatted description from HTML, preserving structure
+ * Returns sanitized HTML suitable for rendering
+ */
+export function extractFormattedDescription(html: string): string {
+  if (!html) return ''
+  
+  const sanitized = sanitizeHtml(html)
+  
+  // If result is very short or empty after sanitization, return empty
+  if (sanitized.length < 10) return ''
+  
+  return sanitized
+}
+
 export function parsePriceToRupees(value: string): number | null {
   const cleaned = value.replace(/[^\d.,]/g, '')
   if (!cleaned) return null

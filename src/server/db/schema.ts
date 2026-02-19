@@ -3,7 +3,8 @@ export type CategoryId = 'luxury' | 'casual' | 'cheap'
 export type BrandRow = {
   id: string
   name: string
-  category: CategoryId
+  category: CategoryId // Legacy field, kept for compatibility
+  categories: CategoryId[]
   description: string | null
   createdAt: string
   updatedAt: string

@@ -14,6 +14,7 @@ import {
   normalizeWhitespace,
   productHandleFromUrl,
   safeProductId,
+  sanitizeHtml,
 } from '../base/utils'
 
 const BRAND_ID = 'mirakk'
@@ -346,13 +347,9 @@ function parseShopifyAmount(data: ShopifyProductJson): number | null {
 }
 
 function parseShopifyDescription(data: ShopifyProductJson): string {
-  const rawDescription = normalizeWhitespace(
-    data.body_html || data.description || '',
-  )
-  if (!rawDescription) return ''
-
-  const $ = load(`<div>${rawDescription}</div>`)
-  return normalizeWhitespace($.text())
+  const html = data.body_html || data.description || ''
+  if (!html) return ''
+  return sanitizeHtml(html)
 }
 
 function extractFullDescription($: ReturnType<typeof load>): string {

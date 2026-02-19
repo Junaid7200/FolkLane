@@ -3,7 +3,8 @@ type CategoryId = 'luxury' | 'casual' | 'cheap'
 export type Brand = {
   id: string
   name: string
-  category: CategoryId
+  category: CategoryId // Legacy field for routing context
+  categories: CategoryId[]
   description?: string
 }
 
@@ -26,7 +27,8 @@ export type CatalogData = {
 type ApiBrand = {
   id: string
   name: string
-  category: string
+  category: string // Legacy field for routing context
+  categories: string[]
   description?: string
 }
 
@@ -61,17 +63,17 @@ function withFallbackImage(items: Item[]): Item[] {
 const localCatalog: CatalogData = {
   categories: ['luxury', 'casual', 'cheap'],
   brands: [
-    { id: 'mtf', name: 'MTF', category: 'luxury', description: 'Timeless elegance and sophistication' },
-    { id: 'cosset', name: 'Cosset', category: 'luxury', description: 'Premium designer collections' },
-    { id: 'maria-nasir', name: 'Maria Nasir', category: 'luxury', description: 'Luxury formal fashion' },
-    { id: 'd-m-collection', name: 'D&M Collection', category: 'casual', description: 'Contemporary casual wear' },
-    { id: 'sobia-nazir', name: 'Sobia Nazir', category: 'casual', description: 'Elegant everyday fashion' },
-    { id: 'jindjan', name: 'Jindjan', category: 'casual', description: 'Modern casual style' },
-    { id: 'saima', name: 'Saima Collection', category: 'cheap', description: 'Quality fashion on budget' },
-    { id: 'uigc-collection', name: 'Urge', category: 'cheap', description: 'Affordable everyday wear' },
-    { id: 'mirakk', name: 'Mirakk', category: 'cheap', description: 'Value-priced fashion' },
-    { id: 'royal-garments', name: 'Royal Garments', category: 'cheap', description: 'Budget-friendly festive and casual picks' },
-    { id: 'khalid-rashid-fabrics', name: 'Khalid Rashid Fabrics', category: 'casual', description: 'Seasonal lawn and fabric collections' },
+    { id: 'mtf', name: 'MTF', category: 'luxury', categories: ['casual', 'luxury'], description: 'Timeless elegance and sophistication' },
+    { id: 'cosset', name: 'Cosset', category: 'cheap', categories: ['cheap'], description: 'Premium designer collections' },
+    { id: 'maria-nasir', name: 'Maria Nasir', category: 'luxury', categories: ['luxury'], description: 'Luxury formal fashion' },
+    { id: 'd-m-collection', name: 'D&M Collection', category: 'casual', categories: ['casual'], description: 'Contemporary casual wear' },
+    { id: 'sobia-nazir', name: 'Sobia Nazir', category: 'luxury', categories: ['luxury'], description: 'Elegant everyday fashion' },
+    { id: 'jindjan', name: 'Jindjan', category: 'casual', categories: ['casual', 'cheap'], description: 'Modern casual style' },
+    { id: 'saima', name: 'Saima Collection', category: 'cheap', categories: ['cheap', 'casual'], description: 'Quality fashion on budget' },
+    { id: 'uigc-collection', name: 'Urge', category: 'casual', categories: ['casual'], description: 'Affordable everyday wear' },
+    { id: 'mirakk', name: 'Mirakk', category: 'cheap', categories: ['cheap'], description: 'Value-priced fashion' },
+    { id: 'royal-garments', name: 'Royal Garments', category: 'casual', categories: ['casual'], description: 'Budget-friendly festive and casual picks' },
+    { id: 'khalid-rashid-fabrics', name: 'Khalid Rashid Fabrics', category: 'casual', categories: ['casual'], description: 'Seasonal lawn and fabric collections' },
   ],
   items: [
     // MTF (Luxury)
@@ -183,16 +185,22 @@ async function fetchJson<T>(path: string): Promise<T> {
 }
 
 function normalizeApiBrands(rows: ApiBrand[]): Brand[] {
-  const hasSupportedCategory = (
+  const hasSupportedCategories = (
     row: ApiBrand,
-  ): row is ApiBrand & { category: CategoryId } => isCategory(row.category)
+  ): row is ApiBrand & { categories: CategoryId[] } => {
+    if (!Array.isArray(row.categories) || row.categories.length === 0) {
+      return false
+    }
+    return row.categories.every(isCategory)
+  }
 
   return rows
-    .filter(hasSupportedCategory)
+    .filter(hasSupportedCategories)
     .map((row) => ({
       id: row.id,
       name: row.name,
-      category: row.category,
+      category: row.categories[0], // Use first category as primary for routing
+      categories: row.categories,
       description: row.description,
     }))
 }
@@ -267,7 +275,7 @@ export function getLocalItems(): Item[] {
 
 export async function getBrandsByCategory(category: CategoryId) {
   const { brands } = await getCatalog()
-  return brands.filter((brand) => brand.category === category)
+  return brands.filter((brand) => brand.categories.includes(category))
 }
 
 export async function getAllBrands() {

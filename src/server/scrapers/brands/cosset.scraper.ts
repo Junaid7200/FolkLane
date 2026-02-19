@@ -6,6 +6,7 @@ import {
   fetchText,
   normalizeWhitespace,
   safeProductId,
+  sanitizeHtml,
 } from '../base/utils'
 
 const BRAND_ID = 'cosset'
@@ -95,12 +96,8 @@ function parsePriceFromCollectionProduct(product: CollectionProduct): number | n
   return parsePriceFromValues(values)
 }
 
-function parseDescriptionFromHtml(html: string): string {
-  const cleaned = normalizeWhitespace(html)
-  if (!cleaned) return ''
-
-  const $ = load(`<div>${cleaned}</div>`)
-  return normalizeWhitespace($.text())
+function parseDescriptionFromHtml(html: string): string {  if (!html) return ''
+  return sanitizeHtml(html)
 }
 
 function parseCollectionDescription(product: CollectionProduct): string {

@@ -10,6 +10,7 @@ import {
   parsePriceToRupees,
   productHandleFromUrl,
   safeProductId,
+  sanitizeHtml,
 } from '../base/utils'
 
 const BRAND_ID = 'jindjan'
@@ -19,6 +20,8 @@ const COLLECTION_URL = `${BASE_URL}/collections/frontpage`
 type ShopifyProductJson = {
   images?: string[]
   featured_image?: string | null
+  description?: string
+  body_html?: string
 }
 
 const IMAGE_FILE_PATTERN = /\.(jpg|jpeg|png|webp|avif|gif)(\?|$)/i
@@ -272,23 +275,32 @@ function getShopifyProductJsonUrl(handle: string) {
   return `${BASE_URL}/products/${encodeURIComponent(handle)}.js`
 }
 
-async function fetchShopifyProductImages(handle: string): Promise<string[]> {
+async function fetchShopifyProductData(handle: string): Promise<{
+  images: string[]
+  description: string
+}> {
   const payload = await fetchJson<ShopifyProductJson>(getShopifyProductJsonUrl(handle))
-  const values: string[] = []
+  const images: string[] = []
 
   if (Array.isArray(payload.images)) {
     for (const image of payload.images) {
       if (typeof image === 'string') {
-        values.push(absoluteUrl(BASE_URL, image))
+        images.push(absoluteUrl(BASE_URL, image))
       }
     }
   }
 
   if (typeof payload.featured_image === 'string') {
-    values.push(absoluteUrl(BASE_URL, payload.featured_image))
+    images.push(absoluteUrl(BASE_URL, payload.featured_image))
   }
 
-  return dedupeImageUrls(values)
+  const descriptionHtml = payload.body_html || payload.description || ''
+  const description = descriptionHtml ? sanitizeHtml(descriptionHtml) : ''
+
+  return {
+    images: dedupeImageUrls(images),
+    description,
+  }
 }
 
 async function parseProduct(
@@ -307,12 +319,6 @@ async function parseProduct(
         $('title').text(),
     ) || handle
 
-  const description = normalizeWhitespace(
-    $('meta[name="description"]').attr('content') ||
-      $('[class*="description"]').first().text() ||
-      '',
-  )
-
   const jsonLdPrice = parsePriceFromJsonLd($)
   const textPrice = normalizeWhitespace(
     $('[itemprop="price"]').attr('content') ||
@@ -323,18 +329,32 @@ async function parseProduct(
   const price = jsonLdPrice ?? fallbackPrice
   if (price === null || price <= 0) return null
 
-  let shopifyImages: string[] = []
+  // Fetch product data from Shopify JSON API (includes images and description)
+  let shopifyData: { images: string[]; description: string } = { images: [], description: '' }
   try {
-    shopifyImages = await fetchShopifyProductImages(handle)
+    shopifyData = await fetchShopifyProductData(handle)
   } catch {
     // Keep HTML extraction as fallback when JSON endpoint is unavailable.
   }
+
+  // Use Shopify description if available, otherwise fall back to HTML extraction
+  const description = shopifyData.description ||
+    (() => {
+      const descriptionHtml =
+        $('.product__description').html() ||
+        $('[class*="description"]').first().html() ||
+        $('[itemprop="description"]').html() ||
+        ''
+      return descriptionHtml
+        ? sanitizeHtml(descriptionHtml)
+        : normalizeWhitespace($('meta[name="description"]').attr('content') || '')
+    })()
 
   const domGalleryImages = parseDomGalleryImages($)
   const jsonLdImages = parseJsonLdProductImages($)
   const ogImage = $('meta[property="og:image"]').attr('content')
   const galleryImages = sanitizeGalleryImages([
-    ...shopifyImages,
+    ...shopifyData.images,
     ...domGalleryImages,
     ...jsonLdImages,
     ...(ogImage ? [absoluteUrl(BASE_URL, ogImage)] : []),

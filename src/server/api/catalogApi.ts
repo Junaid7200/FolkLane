@@ -5,7 +5,8 @@ import { getLocalBrands, getLocalItems, isCategory } from '@/data/catalog'
 export type ApiBrand = {
   id: string
   name: string
-  category: 'luxury' | 'casual' | 'cheap'
+  category: 'luxury' | 'casual' | 'cheap' // Legacy field for routing context
+  categories: Array<'luxury' | 'casual' | 'cheap'>
   description?: string
 }
 
@@ -25,6 +26,7 @@ type SnapshotPayload = {
     id?: string
     name?: string
     category?: string
+    categories?: string[]
     description?: string | null
   }>
   products?: Array<{
@@ -60,14 +62,27 @@ function normalizeSnapshotBrandRows(rows: SnapshotPayload['brands']): Array<ApiB
 
   return rows
     .filter((row): row is NonNullable<typeof row> => Boolean(row))
-    .map((row) => ({
-      id: typeof row.id === 'string' ? row.id : '',
-      name: typeof row.name === 'string' ? row.name : '',
-      category: typeof row.category === 'string' ? row.category : '',
-      description:
-        typeof row.description === 'string' ? row.description : undefined,
-    }))
-    .filter((row): row is ApiBrand => row.id.length > 0 && row.name.length > 0 && isCategory(row.category))
+    .map((row) => {
+      const category = typeof row.category === 'string' ? row.category : ''
+      const categories = Array.isArray(row.categories)
+        ? row.categories.filter((cat): cat is string => typeof cat === 'string' && isCategory(cat))
+        : isCategory(category) ? [category] : []
+
+      return {
+        id: typeof row.id === 'string' ? row.id : '',
+        name: typeof row.name === 'string' ? row.name : '',
+        category: categories[0] || '',
+        categories,
+        description:
+          typeof row.description === 'string' ? row.description : undefined,
+      }
+    })
+    .filter((row): row is ApiBrand => 
+      row.id.length > 0 && 
+      row.name.length > 0 && 
+      row.categories.length > 0 &&
+      isCategory(row.category)
+    )
 }
 
 function normalizeSnapshotProductRows(
@@ -136,11 +151,13 @@ function readSnapshotFromDisk() {
 
 function localBrandsAsApi(): Array<ApiBrand> {
   return getLocalBrands()
-    .filter((brand) => isCategory(brand.category))
+    .filter((brand) => Array.isArray(brand.categories) && brand.categories.length > 0)
+    .filter((brand) => brand.categories.every(isCategory))
     .map((brand) => ({
       id: brand.id,
       name: brand.name,
       category: brand.category,
+      categories: brand.categories,
       description: brand.description,
     }))
 }
@@ -173,6 +190,7 @@ async function listBrandsFromDb(): Promise<Array<ApiBrand>> {
     id: brand.id,
     name: brand.name,
     category: brand.category,
+    categories: brand.categories,
     description: brand.description ?? undefined,
   }))
 }

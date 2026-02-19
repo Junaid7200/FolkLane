@@ -30,6 +30,34 @@ function ensureScrapeRunsColumns(db: ReturnType<typeof getDatabase>) {
   }
 }
 
+function migrateToCategoryArray(db: ReturnType<typeof getDatabase>) {
+  if (!hasColumn(db, 'brands', 'categories')) {
+    db.exec(`ALTER TABLE brands ADD COLUMN categories TEXT`)
+  }
+
+  // Migrate existing category values to categories array
+  const needsMigration = db
+    .prepare(`SELECT COUNT(*) as count FROM brands WHERE categories IS NULL`)
+    .get() as { count: number }
+
+  if (needsMigration.count > 0) {
+    const brands = db
+      .prepare(`SELECT id, category FROM brands WHERE categories IS NULL`)
+      .all() as Array<{ id: string; category: string }>
+
+    const updateStmt = db.prepare(`UPDATE brands SET categories = ? WHERE id = ?`)
+
+    const tx = db.transaction(() => {
+      for (const brand of brands) {
+        const categoriesJson = JSON.stringify([brand.category])
+        updateStmt.run(categoriesJson, brand.id)
+      }
+    })
+
+    tx()
+  }
+}
+
 function migrateAmeenaToSaima(db: ReturnType<typeof getDatabase>) {
   const legacyBrand = db
     .prepare(
@@ -155,6 +183,7 @@ function initializeSchema() {
   `)
 
   ensureScrapeRunsColumns(db)
+  migrateToCategoryArray(db)
   migrateAmeenaToSaima(db)
   db.exec(
     `CREATE INDEX IF NOT EXISTS idx_scrape_runs_queue_job_id ON scrape_runs(queue_job_id);`,
