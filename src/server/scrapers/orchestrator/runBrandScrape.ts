@@ -2,7 +2,7 @@ import { getDatabase } from '../../db/client'
 import { ensureDatabaseReady } from '../../db/init'
 import { replaceProductsByBrand } from '../../db/repositories/productsRepo'
 import type { ProductRow } from '../../db/schema'
-import { scrapeDmCollection } from '../brands/dmCollection.scraper'
+import { scrapeDrHaris } from '../brands/drHaris.scraper'
 import { scrapeJindjan } from '../brands/jindjan.scraper'
 import { scrapeMariaNasir } from '../brands/mariaNasir.scraper'
 import { scrapeMirakk } from '../brands/mirakk.scraper'
@@ -50,8 +50,8 @@ async function scrapeByBrand(
   if (brandId === 'jindjan') {
     return scrapeJindjan(options)
   }
-  if (brandId === 'd-m-collection') {
-    return scrapeDmCollection(options)
+  if (brandId === 'dr-haris') {
+    return scrapeDrHaris(options)
   }
   if (brandId === 'maria-nasir') {
     return scrapeMariaNasir(options)

@@ -137,6 +137,65 @@ function migrateAmeenaToSaima(db: ReturnType<typeof getDatabase>) {
   tx()
 }
 
+function migrateDmCollectionToDrHaris(db: ReturnType<typeof getDatabase>) {
+  const legacyBrand = db
+    .prepare(
+      `SELECT id, name, category, categories, description, created_at, updated_at
+       FROM brands
+       WHERE id = 'd-m-collection'`,
+    )
+    .get() as
+    | {
+        id: string
+        name: string
+        category: string
+        categories: string | null
+        description: string | null
+        created_at: string
+        updated_at: string
+      }
+    | undefined
+
+  if (!legacyBrand) return
+
+  const drHarisBrandExists = Boolean(
+    db
+      .prepare(`SELECT 1 FROM brands WHERE id = 'dr-haris' LIMIT 1`)
+      .get(),
+  )
+  const now = new Date().toISOString()
+
+  const tx = db.transaction(() => {
+    if (!drHarisBrandExists) {
+      db.prepare(
+        `INSERT INTO brands (id, name, category, categories, description, created_at, updated_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      ).run(
+        'dr-haris',
+        'Dr.Haris',
+        legacyBrand.category,
+        legacyBrand.categories || JSON.stringify(['casual']),
+        'Contemporary fashion collections',
+        legacyBrand.created_at || now,
+        now,
+      )
+    } else {
+      db.prepare(`UPDATE brands SET name = ?, updated_at = ? WHERE id = ?`).run(
+        'Dr.Haris',
+        now,
+        'dr-haris',
+      )
+    }
+
+    // Delete D&M Collection products (don't migrate - we'll scrape fresh Dr.Haris products)
+    db.prepare(`DELETE FROM products WHERE brand_id = 'd-m-collection'`).run()
+    db.prepare(`DELETE FROM scrape_runs WHERE brand_id = 'd-m-collection'`).run()
+    db.prepare(`DELETE FROM brands WHERE id = 'd-m-collection'`).run()
+  })
+
+  tx()
+}
+
 function initializeSchema() {
   const db = getDatabase()
 
@@ -185,6 +244,7 @@ function initializeSchema() {
   ensureScrapeRunsColumns(db)
   migrateToCategoryArray(db)
   migrateAmeenaToSaima(db)
+  migrateDmCollectionToDrHaris(db)
   db.exec(
     `CREATE INDEX IF NOT EXISTS idx_scrape_runs_queue_job_id ON scrape_runs(queue_job_id);`,
   )

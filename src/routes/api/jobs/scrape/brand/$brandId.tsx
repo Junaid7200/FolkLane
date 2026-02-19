@@ -23,6 +23,7 @@ const SUPPORTED_MANUAL_SCRAPE_BRANDS = [
   'saima',
   'khalid-rashid-fabrics',
   'royal-garments',
+  'dr-haris'
 ] as const
 type SupportedManualScrapeBrand = (typeof SUPPORTED_MANUAL_SCRAPE_BRANDS)[number]
 

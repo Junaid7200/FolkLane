@@ -1,4 +1,4 @@
-const REQUEST_TIMEOUT_MS = 15000
+const REQUEST_TIMEOUT_MS = 30000
 
 export async function fetchText(url: string): Promise<string> {
   const controller = new AbortController()
@@ -163,7 +163,8 @@ export function safeProductId(brandId: string, handle: string) {
 export function productHandleFromUrl(urlString: string): string | null {
   try {
     const url = new URL(urlString)
-    const match = url.pathname.match(/\/products\/([^/?#]+)/)
+    // Support both /product/ (singular) and /products/ (plural) patterns
+    const match = url.pathname.match(/\/products?\/([^/?#]+)/)
     return match?.[1] ?? null
   } catch {
     return null

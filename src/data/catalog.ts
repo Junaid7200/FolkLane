@@ -66,7 +66,7 @@ const localCatalog: CatalogData = {
     { id: 'mtf', name: 'MTF', category: 'luxury', categories: ['casual', 'luxury'], description: 'Timeless elegance and sophistication' },
     { id: 'cosset', name: 'Cosset', category: 'cheap', categories: ['cheap'], description: 'Premium designer collections' },
     { id: 'maria-nasir', name: 'Maria Nasir', category: 'luxury', categories: ['luxury'], description: 'Luxury formal fashion' },
-    { id: 'd-m-collection', name: 'D&M Collection', category: 'casual', categories: ['casual'], description: 'Contemporary casual wear' },
+    { id: 'dr-haris', name: 'Dr.Haris', category: 'casual', categories: ['casual'], description: 'Contemporary fashion collections' },
     { id: 'sobia-nazir', name: 'Sobia Nazir', category: 'luxury', categories: ['luxury'], description: 'Elegant everyday fashion' },
     { id: 'jindjan', name: 'Jindjan', category: 'casual', categories: ['casual', 'cheap'], description: 'Modern casual style' },
     { id: 'saima', name: 'Saima Collection', category: 'cheap', categories: ['cheap', 'casual'], description: 'Quality fashion on budget' },

@@ -51,7 +51,7 @@ const slides: Array<Slide> = [
       { id: 'mtf', name: 'MTF' },
       { id: 'jindjan', name: 'Jindjan' },
       { id: 'saima', name: 'Saima Collection' },
-      { id: 'd-m-collection', name: 'D&M Collection' },
+      { id: 'dr-haris', name: 'Dr.Haris' },
       { id: 'khalid-rashid-fabrics', name: 'Khalid Rashid Fabrics' },
       { id: 'royal-garments', name: 'Royal Garments' },
       { id: 'uigc-collection', name: 'Urge' },
