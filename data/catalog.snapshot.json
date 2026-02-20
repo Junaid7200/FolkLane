@@ -1,70 +1,106 @@
-﻿{
-  "generatedAt": "2026-02-19T04:05:49.526Z",
+{
+  "generatedAt": "2026-02-20T09:23:43.647Z",
   "brands": [
     {
       "id": "cosset",
       "name": "Cosset",
       "category": "cheap",
+      "categories": [
+        "cheap"
+      ],
       "description": "Premium designer collections"
     },
     {
       "id": "dr-haris",
       "name": "Dr.Haris",
       "category": "casual",
+      "categories": [
+        "casual"
+      ],
       "description": "Contemporary fashion collections"
     },
     {
       "id": "jindjan",
       "name": "Jindjan",
       "category": "casual",
+      "categories": [
+        "casual",
+        "cheap"
+      ],
       "description": "Modern casual style"
     },
     {
       "id": "khalid-rashid-fabrics",
       "name": "Khalid Rashid Fabrics",
       "category": "casual",
+      "categories": [
+        "casual"
+      ],
       "description": "Seasonal lawn and fabric collections"
     },
     {
       "id": "mtf",
       "name": "MTF",
       "category": "luxury",
+      "categories": [
+        "casual",
+        "luxury"
+      ],
       "description": "Timeless elegance and sophistication"
     },
     {
       "id": "maria-nasir",
       "name": "Maria Nasir",
       "category": "luxury",
+      "categories": [
+        "luxury"
+      ],
       "description": "Luxury formal fashion"
     },
     {
       "id": "mirakk",
       "name": "Mirakk",
       "category": "cheap",
+      "categories": [
+        "cheap"
+      ],
       "description": "Value-priced fashion"
     },
     {
       "id": "royal-garments",
       "name": "Royal Garments",
       "category": "casual",
+      "categories": [
+        "casual"
+      ],
       "description": "Budget-friendly festive and casual picks"
     },
     {
       "id": "saima",
       "name": "Saima Collection",
       "category": "cheap",
+      "categories": [
+        "cheap",
+        "casual"
+      ],
       "description": "Quality fashion on budget"
     },
     {
       "id": "sobia-nazir",
       "name": "Sobia Nazir",
       "category": "luxury",
+      "categories": [
+        "luxury"
+      ],
       "description": "Elegant everyday fashion"
     },
     {
       "id": "uigc-collection",
       "name": "Urge",
       "category": "casual",
+      "categories": [
+        "casual"
+      ],
       "description": "Affordable everyday wear"
     }
   ],
